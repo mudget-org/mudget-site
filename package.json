@@ -57,7 +57,7 @@
         "tailwindcss-animate": "^1.0.7",
         "vaul": "^0.9.6",
         "zod": "^3.24.1",
-        "posthog-js": "latest"
+        "posthog-js": "^1.181.0"
     },
     "devDependencies": {
         "@types/node": "^22",

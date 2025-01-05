@@ -1,40 +1,20 @@
-'use client'
+"use client";
 
-import posthog from 'posthog-js'
-import { PostHogProvider as PHProvider } from 'posthog-js/react'
-import { useEffect, useState } from 'react'
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
+import type { ReactNode } from "react";
 
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      posthog.init('YOUR_POSTHOG_PROJECT_API_KEY', {
-        api_host: 'https://app.posthog.com',
-      })
-      setIsLoaded(true)
-    }
-  }, [])
-
-  if (!isLoaded) {
-    return null
-  }
-
-  return <PHProvider client={posthog}>{children}</PHProvider>
+if (typeof window !== "undefined") {
+    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "",
+        person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+    });
 }
 
-export function useFeatureFlag(flagName: string): boolean {
-  const [flagValue, setFlagValue] = useState(false)
-
-  useEffect(() => {
-    const checkFlag = async () => {
-      const value = await posthog.isFeatureEnabled(flagName)
-      setFlagValue(value)
-    }
-
-    checkFlag()
-  }, [flagName])
-
-  return flagValue
+interface CSPostHogProviderProps {
+    children: ReactNode;
 }
 
+export function CSPostHogProvider({ children }: CSPostHogProviderProps) {
+    return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+}
