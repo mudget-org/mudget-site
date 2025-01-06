@@ -17,7 +17,7 @@ import StripePricingTable from "@/components/StripePricingTable";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import Image from "next/image";
 import Logo from "@/assets/MudgetTitleDark.png";
-import { PostHogFlags } from "@/lib/flags.ts";
+import { PostHogFlags } from "@/lib/flags";
 
 const AppURL = process.env.NEXT_PUBLIC_APP_URL || "https://app.mudget.finance";
 
