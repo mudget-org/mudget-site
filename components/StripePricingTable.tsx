@@ -1,16 +1,18 @@
-'use client'
+"use client";
 
-import Script from 'next/script'
+import Script from "next/script";
+import React from "react";
 
 export default function StripePricingTable() {
-  return (
-    <>
-      <Script src="https://js.stripe.com/v3/pricing-table.js" async />
-      <stripe-pricing-table 
-        pricing-table-id="prctbl_1QbTkPFxVqqpKakgRelTIA0M"
-        publishable-key="pk_test_51QRzvvFxVqqpKakgrkvWS32DWcsHd1PQtI6Vx2vbodkhMDIfUw1A3KkH15de08ydmhnjXd2lKwwkCWQ8LIZkyTmX00wON7ix5T"
-      />
-    </>
-  )
+    return (
+        <>
+            <Script src="https://js.stripe.com/v3/pricing-table.js" async />
+            {/* @ts-ignore */}
+            <stripe-pricing-table
+                pricing-table-id="prctbl_1QbTkPFxVqqpKakgRelTIA0M"
+                publishable-key={process.env
+                    .NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""}
+            />
+        </>
+    );
 }
-
