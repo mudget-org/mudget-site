@@ -1,11 +1,10 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Gift, Lightbulb, Target, Users } from "lucide-react";
 import Logo from "@/assets/MudgetTitleDark.png";
-
 
 export default function AboutPage() {
     return (
@@ -49,7 +48,7 @@ export default function AboutPage() {
                                         Our Mission
                                     </h2>
                                     <p className="text-gray-500 dark:text-gray-400">
-                                        At Mudget, we're on a mission to
+                                        At Mudget, we&apos;re on a mission to
                                         democratize financial wellness. We
                                         believe that everyone deserves access to
                                         powerful, easy-to-use tools that can
@@ -94,7 +93,7 @@ export default function AboutPage() {
                                     <p className="text-gray-500 dark:text-gray-400">
                                         We combine cutting-edge technology with
                                         user-friendly design to create a
-                                        financial management experience that's
+                                        financial management experience that&apos;s
                                         both powerful and accessible. Our
                                         AI-driven insights help you make smarter
                                         financial decisions, while our intuitive
@@ -110,8 +109,8 @@ export default function AboutPage() {
                                         Join Us
                                     </h2>
                                     <p className="text-gray-500 dark:text-gray-400">
-                                        Whether you're just starting your
-                                        financial journey or you're a seasoned
+                                        Whether you&apos;re just starting your
+                                        financial journey or you&apos;re a seasoned
                                         pro, Mudget is here to help you take
                                         control of your finances and build a
                                         brighter financial future. Join our

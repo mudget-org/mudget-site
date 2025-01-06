@@ -7,7 +7,7 @@ export default function StripePricingTable() {
     return (
         <>
             <Script src="https://js.stripe.com/v3/pricing-table.js" async />
-            {/* @ts-ignore */}
+            {/* @ts-expect-error this is a custom component for embedding from Stripe */}
             <stripe-pricing-table
                 pricing-table-id="prctbl_1QbTkPFxVqqpKakgRelTIA0M"
                 publishable-key={process.env
