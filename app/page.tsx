@@ -106,7 +106,7 @@ export default function LandingPage() {
                         </Link>
                     )}
                     <Link
-                        href={AppURL}
+                        href={`${AppURL}/login`}
                         className="text-sm font-medium bg-[#6ae58d] text-black hover:bg-[#5ad17c] px-3 py-2 rounded-md transition-colors"
                     >
                         App
