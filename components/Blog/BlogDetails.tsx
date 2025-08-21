@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import React from "react";
 import { slug } from "github-slugger";
 
-const BlogDetails = ({ blog }) => {
+const BlogDetails = ({ blog }: { blog: any}) => {
   return (
     <div className="px-2 md:px-10 bg-[#6ae58d]/10 dark:bg-[#6ae58d]/20 text-gray-800 dark:text-gray-200 py-4 flex items-center justify-around flex-wrap text-lg sm:text-xl font-medium mx-5 md:mx-10 rounded-lg border border-[#6ae58d]/20">
       <time className="m-3 flex items-center gap-2">
