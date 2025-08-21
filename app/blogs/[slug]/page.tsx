@@ -61,6 +61,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function TableOfContentsItem({ item, level = "two" }: { item: { url: string, title: string, items: any[] }, level?: string }){
   return (
     <li className="py-1">
@@ -80,6 +81,7 @@ function TableOfContentsItem({ item, level = "two" }: { item: { url: string, tit
       </a>
       {item.items.length > 0 && (
         <ul className="mt-1">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {item.items.map((subItem: { url: string, title: string, items: any[] }) => (
             <TableOfContentsItem 
               key={subItem.url} 
