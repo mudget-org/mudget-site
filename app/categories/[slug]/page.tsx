@@ -5,7 +5,7 @@ import { slug } from "github-slugger";
 
 
 export async function generateStaticParams() {
-  const categories = [];
+  const categories: string[] = [];
   const paths = [{ slug: "all" }];
 
   allBlogs.map((blog) => {
