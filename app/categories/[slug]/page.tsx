@@ -24,9 +24,69 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const categoryName = params.slug.replaceAll("-", " ");
+  const isAllCategory = params.slug === "all";
+  
+  const title = isAllCategory 
+    ? "All Financial Articles | Mudget Blog" 
+    : `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Articles | Mudget Blog`;
+    
+  const description = isAllCategory
+    ? "Explore all our financial articles covering budgeting, investing, personal finance, and money management tips for couples and young adults."
+    : `Discover expert ${categoryName} articles and guides. Learn practical financial strategies and tips for better money management with Mudget.`;
+
+  const keywords = [
+    categoryName,
+    "personal finance",
+    "budgeting",
+    "financial planning", 
+    "money management",
+    "couples finance",
+    "Mudget",
+    "financial education"
+  ].join(", ");
+
   return {
-    title: `${params.slug.replaceAll("-"," ")} Blogs`,
-    description: `Learn more about ${params.slug === "all" ? "web development" : params.slug} through our collection of expert blogs and tutorials`,
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: `https://mudget.finance/categories/${params.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `https://mudget.finance/categories/${params.slug}`,
+      siteName: "Mudget Financial Blog",
+      images: [
+        {
+          url: "https://mudget.finance/social-banner.png",
+          width: 1200,
+          height: 630,
+          alt: `${categoryName} Financial Articles`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["https://mudget.finance/social-banner.png"],
+      creator: "@mudget_finance",
+      site: "@mudget_finance",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
   };
 }
 

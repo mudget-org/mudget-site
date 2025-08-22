@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +22,54 @@ import { PostHogFlags } from "@/lib/flags";
 import Footer from "@/components/Footer";
 
 const AppURL = process.env.NEXT_PUBLIC_APP_URL || "https://app.mudget.finance";
+
+function AnimatedBadge() {
+    const statements = [
+        "Perfect for Couples",
+        "Perfect for Individuals", 
+        "Perfect for Investors",
+        "Perfect for Experts",
+        "Perfect for Beginners"
+    ];
+    
+    const [currentIndex, setCurrentIndex] = useState(0);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % statements.length);
+        }, 3000); // Change every 3 seconds
+        
+        return () => clearInterval(interval);
+    }, [statements.length]);
+    
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#6ae58d]/10 rounded-full border border-[#6ae58d]/20"
+        >
+            <span className="w-2 h-2 bg-[#6ae58d] rounded-full animate-pulse" />
+            <div className="relative overflow-hidden h-5 flex items-center min-w-[140px]">
+                <AnimatePresence mode="wait">
+                    <motion.span
+                        key={currentIndex}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -20, opacity: 0 }}
+                        transition={{ 
+                            duration: 0.5,
+                            ease: "easeInOut"
+                        }}
+                        className="text-sm font-medium text-gray-700 dark:text-gray-300 absolute whitespace-nowrap"
+                    >
+                        {statements[currentIndex]}
+                    </motion.span>
+                </AnimatePresence>
+            </div>
+        </motion.div>
+    );
+}
 
 function BusinessSection() {
     const showBusinessSection = useFeatureFlagEnabled(PostHogFlags.Business);
@@ -147,17 +195,7 @@ export default function LandingPage() {
                             className="flex flex-col items-center justify-center space-y-8 text-center"
                         >
                             <div className="space-y-6">
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.8, delay: 0.1 }}
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#6ae58d]/10 rounded-full border border-[#6ae58d]/20"
-                                >
-                                    <span className="w-2 h-2 bg-[#6ae58d] rounded-full animate-pulse" />
-                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Perfect for Couples
-                                    </span>
-                                </motion.div>
+                                <AnimatedBadge />
 
                                 <motion.h1
                                     initial={{ opacity: 0, y: 20 }}
@@ -403,7 +441,7 @@ export default function LandingPage() {
                 </section>
 
                 {/* AI Assistant Section */}
-                <section className="w-full flex justify-center py-12 md:py-24 lg:py-32">
+                <section id="ai" className="w-full flex justify-center py-12 md:py-24 lg:py-32">
                     <div className="container px-4 md:px-6">
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
                             <motion.div
@@ -504,7 +542,7 @@ export default function LandingPage() {
                                     <div className="text-2xl mb-2">🌟</div>
                                     <h3 className="font-semibold mb-2">Individuals</h3>
                                     <p className="text-gray-600 dark:text-gray-300 text-sm">
-                                        Anyone starting their financial journey
+                                        Anyone on their financial journey, from expert to beginner
                                     </p>
                                 </motion.div>
                                 <motion.div
@@ -553,7 +591,7 @@ export default function LandingPage() {
                                     Ready to Take Control?
                                 </h2>
                                 <p className="mx-auto max-w-[500px] text-gray-700 md:text-xl">
-                                    Join thousands of couples and individuals who&rsquo;ve simplified their finances with Mudget.
+                                    Join the team of couples and individuals who&rsquo;ve simplified their finances with Mudget.
                                 </p>
                             </div>
                             <Button

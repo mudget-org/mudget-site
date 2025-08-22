@@ -393,6 +393,22 @@ export default function LoanCalculator() {
                 </Card>
               )}
 
+              {/* Disclaimer */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mb-6"
+              >
+                <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
+                      <strong>Disclaimer:</strong> This calculator provides working estimates only. Actual loan terms, rates, and payments may vary based on your credit profile, lender requirements, fees, and market conditions. For precise calculations, consult with a lending professional.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
               {/* CTA to Mudget */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

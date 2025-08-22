@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Calculator, Users, BookOpen, Menu, X } from "lucide-react";
+import { isFeatureEnabled } from "@/utils/featureFlags";
 
 import Image from "next/image";
 import Logo from "@/assets/MudgetTitleDark.png";
@@ -10,9 +11,11 @@ import Logo from "@/assets/MudgetTitleDark.png";
 const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: string}) => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [whyMudgetOpen, setWhyMudgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const whyMudgetRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -22,6 +25,9 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
       }
       if (featuresRef.current && !featuresRef.current.contains(event.target as Node)) {
         setFeaturesOpen(false);
+      }
+      if (whyMudgetRef.current && !whyMudgetRef.current.contains(event.target as Node)) {
+        setWhyMudgetOpen(false);
       }
     };
 
@@ -78,7 +84,7 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
                       </div>
                     </Link>
                     <Link
-                      href="/about"
+                      href="/#ai"
                       className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setFeaturesOpen(false)}
                     >
@@ -133,6 +139,13 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
                     >
                       Loan Calculator
                     </Link>
+                    <Link
+                      href="/tools/credit-score-calculator"
+                      className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      Credit Score Calculator
+                    </Link>
                   </div>
                   <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3">
                     <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
@@ -140,10 +153,10 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
                     </div>
                     <div className="space-y-1">
                       <div className="px-3 py-2 text-sm text-gray-400 cursor-not-allowed">
-                        Budget Planner
+                        Insurance Coverage Calculator
                       </div>
                       <div className="px-3 py-2 text-sm text-gray-400 cursor-not-allowed">
-                        Investment Tracker
+                        Debt Repayment Strategy
                       </div>
                     </div>
                   </div>
@@ -151,6 +164,65 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
               </div>
             )}
           </div>
+
+          {/* Why Mudget Dropdown - Feature Flagged */}
+          {isFeatureEnabled('showWhyMudgetSection') && (
+            <div className="relative" ref={whyMudgetRef}>
+              <button
+                onClick={() => setWhyMudgetOpen(!whyMudgetOpen)}
+                className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 transition-colors"
+              >
+                Why Mudget
+                <ChevronDown className={`w-4 h-4 transition-transform ${whyMudgetOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {whyMudgetOpen && (
+                <div className="absolute top-full mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+                  <div className="p-4">
+                    <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+                      Comparisons
+                    </div>
+                    <div className="space-y-1">
+                      <Link
+                        href="/why-mudget/vs-mint"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setWhyMudgetOpen(false)}
+                      >
+                        vs Mint
+                      </Link>
+                      <Link
+                        href="/why-mudget/vs-ynab"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setWhyMudgetOpen(false)}
+                      >
+                        vs YNAB
+                      </Link>
+                      <Link
+                        href="/why-mudget/vs-everydollar"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setWhyMudgetOpen(false)}
+                      >
+                        vs EveryDollar
+                      </Link>
+                      <Link
+                        href="/why-mudget/vs-pocketguard"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setWhyMudgetOpen(false)}
+                      >
+                        vs PocketGuard
+                      </Link>
+                      <Link
+                        href="/why-mudget/vs-spreadsheets"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setWhyMudgetOpen(false)}
+                      >
+                        vs Spreadsheets
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           
           <Link
             className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -234,6 +306,27 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
               Loan Calculator
             </Link>
             <Link
+              href="/tools/credit-score-calculator"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Credit Score Calculator
+            </Link>
+            <Link
+              href="/why-mudget/vs-competition"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              vs Competition
+            </Link>
+            <Link
+              href="/why-mudget/vs-spreadsheets"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              vs Spreadsheets
+            </Link>
+            <Link
               href="/blog"
               className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
               onClick={() => setMobileMenuOpen(false)}
@@ -247,7 +340,7 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
             >
               About
             </Link>
-            {!showPricesSection && (
+            {showPricesSection && (
               <Link
                 href="/#pricing"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"

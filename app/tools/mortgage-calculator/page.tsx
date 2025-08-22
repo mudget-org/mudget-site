@@ -1,15 +1,17 @@
 
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Calculator, Download, Share2, Home, DollarSign, Calendar, Percent } from 'lucide-react';
+import { Calculator, Download, Share2, Home, DollarSign, Calendar, Percent, Link } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { showCopiedTooltip } from '@/utils/showTooltip';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { CalculatorStructuredData } from '@/components/StructuredData';
+import { CalculatorStructuredData, FAQStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -26,11 +28,26 @@ interface MortgageResult {
   }[];
 }
 
-export default function MortgageCalculator() {
+function MortgageCalculatorContent() {
+  const searchParams = useSearchParams();
+  
   const [homePrice, setHomePrice] = useState(400000);
   const [downPayment, setDownPayment] = useState(80000);
   const [loanTerm, setLoanTerm] = useState(30);
   const [interestRate, setInterestRate] = useState(6.5);
+
+  // Load values from URL parameters on component mount
+  useEffect(() => {
+    const urlHomePrice = searchParams.get('homePrice');
+    const urlDownPayment = searchParams.get('downPayment');
+    const urlLoanTerm = searchParams.get('loanTerm');
+    const urlInterestRate = searchParams.get('interestRate');
+
+    if (urlHomePrice) setHomePrice(Number(urlHomePrice));
+    if (urlDownPayment) setDownPayment(Number(urlDownPayment));
+    if (urlLoanTerm) setLoanTerm(Number(urlLoanTerm));
+    if (urlInterestRate) setInterestRate(Number(urlInterestRate));
+  }, [searchParams]);
 
   const results = useMemo((): MortgageResult => {
     const principal = homePrice - downPayment;
@@ -97,11 +114,29 @@ export default function MortgageCalculator() {
     URL.revokeObjectURL(url);
   };
 
+  const generateShareableURL = () => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const params = new URLSearchParams({
+      homePrice: homePrice.toString(),
+      downPayment: downPayment.toString(),
+      loanTerm: loanTerm.toString(),
+      interestRate: interestRate.toString()
+    });
+    return `${baseUrl}?${params.toString()}`;
+  };
+
+  const copyShareableLink = async () => {
+    const shareableUrl = generateShareableURL();
+    await navigator.clipboard.writeText(shareableUrl);
+    showCopiedTooltip('Shareable link copied to clipboard!');
+  };
+
   const shareResults = async () => {
+    const shareableUrl = generateShareableURL();
     const shareData = {
       title: 'Mudget Mortgage Calculator Results',
       text: `Monthly Payment: $${results.monthlyPayment.toFixed(2)} | Total Interest: $${results.totalInterest.toFixed(2)}`,
-      url: window.location.href
+      url: shareableUrl
     };
 
     if (navigator.share) {
@@ -109,9 +144,34 @@ export default function MortgageCalculator() {
     } else {
       // Fallback to clipboard
       await navigator.clipboard.writeText(`${shareData.text} - ${shareData.url}`);
-      alert('Results copied to clipboard!');
+      showCopiedTooltip('Results and shareable link copied to clipboard!');
     }
   };
+
+  const mortgageFAQs = [
+    {
+      question: "How is my monthly mortgage payment calculated?",
+      answer: "Your monthly mortgage payment is calculated using the loan amount (home price minus down payment), interest rate, and loan term. The formula accounts for both principal and interest payments over the life of the loan."
+    },
+    {
+      question: "What is an amortization schedule?",
+      answer: "An amortization schedule shows how each monthly payment is split between principal and interest over the entire loan term. Early payments have more interest, while later payments have more principal."
+    },
+    {
+      question: "Should I make a larger down payment?",
+      answer: "A larger down payment reduces your loan amount, monthly payments, and total interest paid. However, consider your cash flow needs and other investment opportunities when deciding on down payment size."
+    },
+    {
+      question: "What factors affect my mortgage rate?",
+      answer: "Mortgage rates are influenced by your credit score, down payment amount, loan term, debt-to-income ratio, and current market conditions. Shop around with multiple lenders for the best rates."
+    }
+  ];
+
+  const breadcrumbItems = [
+    { name: "Home", url: "https://mudget.finance" },
+    { name: "Financial Tools", url: "https://mudget.finance/tools" },
+    { name: "Mortgage Calculator", url: "https://mudget.finance/tools/mortgage-calculator" }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -120,6 +180,8 @@ export default function MortgageCalculator() {
         description="Calculate your monthly mortgage payment, total interest, and view complete amortization schedule with our free mortgage calculator."
         url="https://mudget.finance/tools/mortgage-calculator"
       />
+      <FAQStructuredData faqs={mortgageFAQs} />
+      <BreadcrumbStructuredData items={breadcrumbItems} />
       <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
       
       <main className="container mx-auto px-4 py-12">
@@ -263,24 +325,35 @@ export default function MortgageCalculator() {
                   
                   <Separator />
                   
-                  <div className="flex gap-2">
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={exportToCSV}
+                        variant="outline"
+                        className="flex-1"
+                        disabled={results.monthlyBreakdown.length === 0}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Export CSV
+                      </Button>
+                      <Button
+                        onClick={shareResults}
+                        variant="outline"
+                        className="flex-1"
+                        disabled={results.monthlyPayment === 0}
+                      >
+                        <Share2 className="w-4 h-4 mr-2" />
+                        Share
+                      </Button>
+                    </div>
                     <Button
-                      onClick={exportToCSV}
+                      onClick={copyShareableLink}
                       variant="outline"
-                      className="flex-1"
-                      disabled={results.monthlyBreakdown.length === 0}
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Export CSV
-                    </Button>
-                    <Button
-                      onClick={shareResults}
-                      variant="outline"
-                      className="flex-1"
+                      className="w-full"
                       disabled={results.monthlyPayment === 0}
                     >
-                      <Share2 className="w-4 h-4 mr-2" />
-                      Share
+                      <Link className="w-4 h-4 mr-2" />
+                      Copy Shareable Link
                     </Button>
                   </div>
                 </CardContent>
@@ -334,6 +407,22 @@ export default function MortgageCalculator() {
                 </Card>
               )}
 
+              {/* Disclaimer */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mb-6"
+              >
+                <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
+                      <strong>Disclaimer:</strong> This calculator provides working estimates only. Actual mortgage terms, rates, and payments may vary based on your credit profile, lender requirements, and market conditions. For precise calculations, consult with a mortgage professional.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
               {/* CTA to Mudget */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -361,5 +450,13 @@ export default function MortgageCalculator() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function MortgageCalculator() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <MortgageCalculatorContent />
+    </Suspense>
   );
 }

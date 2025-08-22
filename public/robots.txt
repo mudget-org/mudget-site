@@ -1,11 +1,27 @@
-# robots.txt for Mudget (mudget.finance)
-
+# *
 User-agent: *
-Disallow: /api/      # Prevent crawling of API endpoints
-Disallow: /_next/    # Prevent crawling of Next.js internal files
-Disallow: /static/   # Block access to static assets if needed
-Disallow: /admin/    # Example: Block access to admin area
-Disallow: /dashboard/ # Example: Block access to user dashboards
-Allow: /             # Allow all other content
+Allow: /
+Crawl-delay: 1
 
+# *
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /404
+Disallow: /500
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Host
+Host: https://mudget.finance
+
+# Sitemaps
 Sitemap: https://mudget.finance/sitemap.xml

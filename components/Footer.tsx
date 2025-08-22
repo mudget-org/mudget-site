@@ -2,13 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Linkedin, Mail, Youtube } from 'lucide-react';
+import { isFeatureEnabled } from '@/utils/featureFlags';
 import Logo from '@/assets/MudgetTitleDark.png';
 
 export default function Footer() {
   return (
     <footer className="border-t bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 md:px-6 py-8">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className={`grid gap-8 ${isFeatureEnabled('showWhyMudgetSection') ? 'md:grid-cols-5' : 'md:grid-cols-4'}`}>
           {/* Brand & Social */}
           <div className="space-y-4">
             <Image src={Logo} alt="Mudget" height={100} width={100} />
@@ -75,6 +76,17 @@ export default function Footer() {
               <Link href="/tools/loan-calculator" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 Loan Calculator
               </Link>
+              <Link href="/tools/credit-score-calculator" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                Credit Score Calculator
+              </Link>
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <span>Insurance Coverage Calculator</span>
+                <span className="px-2 py-0.5 text-xs bg-[#6ae58d]/10 text-[#6ae58d] rounded-full">Coming Soon</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <span>Debt Repayment Strategy</span>
+                <span className="px-2 py-0.5 text-xs bg-[#6ae58d]/10 text-[#6ae58d] rounded-full">Coming Soon</span>
+              </div>
             </nav>
           </div>
 
@@ -85,14 +97,38 @@ export default function Footer() {
               <Link href="/blog" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 Blog
               </Link>
+              <Link href="/faq" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                FAQ
+              </Link>
               <Link href="/about" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 About
               </Link>
-              <Link href="#" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                Financial Guides
-              </Link>
             </nav>
           </div>
+
+          {/* Why Mudget - Feature Flagged */}
+          {isFeatureEnabled('showWhyMudgetSection') && (
+            <div className="space-y-4">
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Why Mudget</h4>
+              <nav className="space-y-2">
+                <Link href="/why-mudget/vs-mint" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  vs Mint
+                </Link>
+                <Link href="/why-mudget/vs-ynab" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  vs YNAB
+                </Link>
+                <Link href="/why-mudget/vs-everydollar" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  vs EveryDollar
+                </Link>
+                <Link href="/why-mudget/vs-pocketguard" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  vs PocketGuard
+                </Link>
+                <Link href="/why-mudget/vs-spreadsheets" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  vs Spreadsheets
+                </Link>
+              </nav>
+            </div>
+          )}
 
           {/* Legal */}
           <div className="space-y-4">

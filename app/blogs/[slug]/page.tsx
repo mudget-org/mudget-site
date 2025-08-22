@@ -1,5 +1,6 @@
 import BlogDetails from "@/components/Blog/BlogDetails";
 import RenderMdx from "@/components/Blog/RenderMdx";
+import CopyLinkButton from "@/components/Blog/CopyLinkButton";
 import Tag from "@/components/Elements/Tag";
 import siteMetadata from "@/utils/siteMetaData";
 import { blogs } from '#site/content'
@@ -36,9 +37,32 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const authors = blog?.author ? [blog.author] : siteMetadata.author;
 
+  const keywords = [
+    ...blog.tags,
+    "budgeting",
+    "personal finance", 
+    "financial planning",
+    "couples finance",
+    "money management",
+    "Mudget"
+  ].join(", ");
+
   return {
-    title: blog.title,
+    title: `${blog.title} | Mudget Financial Blog`,
     description: blog.description,
+    keywords: keywords,
+    authors: [{ name: authors }],
+    creator: authors,
+    publisher: "Mudget Finance",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    metadataBase: new URL(siteMetadata.siteUrl),
+    alternates: {
+      canonical: siteMetadata.siteUrl + blog.url,
+    },
     openGraph: {
       title: blog.title,
       description: blog.description,
@@ -50,12 +74,26 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       modifiedTime: modifiedAt,
       images: ogImages,
       authors: authors.length > 0 ? authors : [siteMetadata.author],
+      tags: blog.tags,
     },
     twitter: {
       card: "summary_large_image",
       title: blog.title,
       description: blog.description,
       images: ogImages,
+      creator: "@mudget_finance",
+      site: "@mudget_finance",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
@@ -115,7 +153,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": ["BlogPosting", "Article"],
     "headline": blog.title,
     "description": blog.description,
     "image": imageList,
@@ -125,14 +163,26 @@ export default async function BlogPage({ params }: { params: { slug: string } })
       "@type": "Person",
       "name": blog?.author || siteMetadata.author,
       "url": siteMetadata.siteUrl,
+      "jobTitle": "Financial Content Creator",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Mudget Finance"
+      }
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Mudget",
+      "name": "Mudget Finance",
+      "url": siteMetadata.siteUrl,
       "logo": {
         "@type": "ImageObject",
-        "url": siteMetadata.siteUrl + "/logo.png",
+        "url": siteMetadata.siteUrl + "/Mudgee.svg",
+        "width": 200,
+        "height": 200
       },
+      "sameAs": [
+        "https://twitter.com/mudget_finance",
+        "https://www.linkedin.com/company/mudget/"
+      ]
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -140,7 +190,32 @@ export default async function BlogPage({ params }: { params: { slug: string } })
     },
     "keywords": blog.tags?.join(", ") || "budgeting, personal finance, money management",
     "articleSection": "Personal Finance",
+    "articleBody": blog.description,
+    "wordCount": blog.body?.length || 0,
     "url": siteMetadata.siteUrl + blog.url,
+    "isPartOf": {
+      "@type": "Website",
+      "name": siteMetadata.title,
+      "url": siteMetadata.siteUrl
+    },
+    "potentialAction": {
+      "@type": "ReadAction",
+      "target": siteMetadata.siteUrl + blog.url
+    },
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "couples, young adults, financial planning enthusiasts"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Personal Finance"
+      },
+      {
+        "@type": "Thing", 
+        "name": "Budgeting"
+      }
+    ]
   }
 
   return (
@@ -182,8 +257,13 @@ export default async function BlogPage({ params }: { params: { slug: string } })
 
       <div className="grid grid-cols-12  gap-y-8 lg:gap-8 sxl:gap-16 mt-8 px-5 md:px-10">
         <div className="col-span-12  lg:col-span-4">
+          <CopyLinkButton 
+            url={siteMetadata.siteUrl + blog.url}
+            className="sticky top-6"
+          />
+          
           <details
-            className="border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg p-4 sticky top-6 max-h-[80vh] overflow-hidden overflow-y-auto bg-white dark:bg-gray-800 shadow-lg"
+            className="border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg p-4 sticky top-16 max-h-[80vh] overflow-hidden overflow-y-auto bg-white dark:bg-gray-800 shadow-lg"
             open
           >
             <summary className="text-lg font-semibold capitalize cursor-pointer">
