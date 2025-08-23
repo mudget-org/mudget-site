@@ -12,6 +12,7 @@ const siteMetadata = {
     twitter: 'https://twitter.com/mudget.finance',
     facebook: 'https://facebook.com',
     linkedin: 'https://www.linkedin.com/company/mudget/',
+    reddit: 'https://reddit.com/r/mudget',
     locale: 'en-US',
   }
   
