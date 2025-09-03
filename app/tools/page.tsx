@@ -48,19 +48,19 @@ const calculators = [
 
 const blogPosts = [
   {
-    title: "How to Create a Budget That Actually Works",
+    title: "The Power of Budgeting: Taking Control of Your Financial Future",
     description: "Learn practical budgeting strategies that you can stick to long-term.",
-    href: "/blog/budgeting-guide"
+    href: "/blogs/the-power-of-budgeting-taking-control-of-your-financial-future"
   },
   {
-    title: "Understanding Your Credit Score",
-    description: "Everything you need to know about credit scores and how to improve them.",
-    href: "/blog/credit-score-guide"
+    title: "Credit Building for Beginners: Why Good Credit Matters (And How to Get It)",
+    description: "Everything you need to know about credit and why you need it.",
+    href: "/blogs/credit-building-for-beginners"
   },
   {
-    title: "First-Time Home Buyer's Guide",
-    description: "Essential tips for navigating your first home purchase.",
-    href: "/blog/first-time-home-buyer"
+    title: "Emergency Fund Reality Check: How Much You Actually Need (And Where to Keep It)",
+    description: "Essential tips for navigating your emergency fund.",
+    href: "/blogs/emergency-fund-reality-check"
   }
 ];
 
