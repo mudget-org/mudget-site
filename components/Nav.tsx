@@ -8,7 +8,7 @@ import { isFeatureEnabled } from "@/utils/featureFlags";
 import Image from "next/image";
 import Logo from "@/assets/MudgetTitleDark.png";
 
-const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: string}) => {
+const Nav = ({ AppURL}: {AppURL: string}) => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [whyMudgetOpen, setWhyMudgetOpen] = useState(false);
@@ -182,41 +182,51 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
                       Comparisons
                     </div>
                     <div className="space-y-1">
-                      <Link
-                        href="/why-mudget/vs-mint"
-                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        onClick={() => setWhyMudgetOpen(false)}
-                      >
-                        vs Mint
-                      </Link>
-                      <Link
-                        href="/why-mudget/vs-ynab"
-                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        onClick={() => setWhyMudgetOpen(false)}
-                      >
-                        vs YNAB
-                      </Link>
-                      <Link
-                        href="/why-mudget/vs-everydollar"
-                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        onClick={() => setWhyMudgetOpen(false)}
-                      >
-                        vs EveryDollar
-                      </Link>
-                      <Link
-                        href="/why-mudget/vs-pocketguard"
-                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        onClick={() => setWhyMudgetOpen(false)}
-                      >
-                        vs PocketGuard
-                      </Link>
-                      <Link
-                        href="/why-mudget/vs-spreadsheets"
-                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                        onClick={() => setWhyMudgetOpen(false)}
-                      >
-                        vs Spreadsheets
-                      </Link>
+                      {isFeatureEnabled('showVsMint') && (
+                        <Link
+                          href="/why-mudget/vs-mint"
+                          className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                          onClick={() => setWhyMudgetOpen(false)}
+                        >
+                          vs Mint
+                        </Link>
+                      )}
+                      {isFeatureEnabled('showVsYnab') && (
+                        <Link
+                          href="/why-mudget/vs-ynab"
+                          className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                          onClick={() => setWhyMudgetOpen(false)}
+                        >
+                          vs YNAB
+                        </Link>
+                      )}
+                      {isFeatureEnabled('showVsEverydollar') && (
+                        <Link
+                          href="/why-mudget/vs-everydollar"
+                          className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                          onClick={() => setWhyMudgetOpen(false)}
+                        >
+                          vs EveryDollar
+                        </Link>
+                      )}
+                      {isFeatureEnabled('showVsPocketguard') && (
+                        <Link
+                          href="/why-mudget/vs-pocketguard"
+                          className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                          onClick={() => setWhyMudgetOpen(false)}
+                        >
+                          vs PocketGuard
+                        </Link>
+                      )}
+                      {isFeatureEnabled('showVsSpreadsheets') && (
+                        <Link
+                          href="/why-mudget/vs-spreadsheets"
+                          className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                          onClick={() => setWhyMudgetOpen(false)}
+                        >
+                          vs Spreadsheets
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -237,11 +247,11 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
           >
             About
           </Link>
-          
-          {showPricesSection && (
+
+          {isFeatureEnabled('showPricingPage') && (
             <Link
               className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
-              href="/#pricing"
+              href="/pricing"
             >
               Pricing
             </Link>
@@ -312,20 +322,15 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
             >
               Credit Score Calculator
             </Link>
-            <Link
-              href="/why-mudget/vs-competition"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              vs Competition
-            </Link>
-            <Link
-              href="/why-mudget/vs-spreadsheets"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              vs Spreadsheets
-            </Link>
+            {isFeatureEnabled('showWhyMudgetSection') && isFeatureEnabled('showVsSpreadsheets') && (
+              <Link
+                href="/why-mudget/vs-spreadsheets"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                vs Spreadsheets
+              </Link>
+            )}
             <Link
               href="/blog"
               className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
@@ -340,9 +345,9 @@ const Nav = ({showPricesSection, AppURL}: {showPricesSection: boolean, AppURL: s
             >
               About
             </Link>
-            {showPricesSection && (
+            {isFeatureEnabled('showPricingPage') && (
               <Link
-                href="/#pricing"
+                href="/pricing"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >

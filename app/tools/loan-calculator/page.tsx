@@ -9,9 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalculatorStructuredData } from '@/components/StructuredData';
+import { CalculatorStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData';
+import Link from 'next/link';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -27,6 +29,17 @@ interface LoanResult {
     interest: number;
     balance: number;
   }[];
+  improvements: Array<{
+    action: string;
+    impact: string;
+    timeframe: string;
+    priority: "high" | "medium" | "low";
+  }>;
+  loanAnalysis: {
+    totalInterestRatio: number;
+    effectiveRate: number;
+    costEfficiency: "excellent" | "good" | "fair" | "poor";
+  };
 }
 
 const loanTypes = [
@@ -42,6 +55,12 @@ export default function LoanCalculator() {
   const [loanTerm, setLoanTerm] = useState(60);
   const [loanType, setLoanType] = useState('personal');
 
+  const breadcrumbItems = [
+    { name: "Home", url: "https://mudget.finance" },
+    { name: "Financial Tools", url: "https://mudget.finance/tools" },
+    { name: "Loan Calculator", url: "https://mudget.finance/tools/loan-calculator" }
+  ];
+
   const results = useMemo((): LoanResult => {
     const monthlyRate = interestRate / 100 / 12;
     const totalPayments = loanTerm;
@@ -52,7 +71,13 @@ export default function LoanCalculator() {
         totalPayment: 0,
         totalInterest: 0,
         payoffDate: new Date(),
-        monthlyBreakdown: []
+        monthlyBreakdown: [],
+        improvements: [],
+        loanAnalysis: {
+          totalInterestRatio: 0,
+          effectiveRate: 0,
+          costEfficiency: "poor" as const
+        }
       };
     }
 
@@ -83,12 +108,156 @@ export default function LoanCalculator() {
       });
     }
 
+    // Loan Cost Analysis (based only on loan terms)
+    const totalInterestRatio = (totalInterest / loanAmount) * 100;
+    const effectiveRate = (totalInterest / loanAmount) / (loanTerm / 12) * 100; // Annualized cost
+    
+    // Market rate benchmarks by loan type (based on 2024 data)
+    const marketRates = {
+      personal: { excellent: 6.0, good: 10.0, fair: 15.0 },
+      auto: { excellent: 4.0, good: 7.0, fair: 12.0 },
+      student: { excellent: 4.0, good: 6.0, fair: 8.0 },
+      business: { excellent: 5.0, good: 8.0, fair: 12.0 }
+    };
+
+    const benchmarks = marketRates[loanType as keyof typeof marketRates];
+    let costEfficiency: "excellent" | "good" | "fair" | "poor";
+    
+    if (interestRate <= benchmarks.excellent) costEfficiency = "excellent";
+    else if (interestRate <= benchmarks.good) costEfficiency = "good";
+    else if (interestRate <= benchmarks.fair) costEfficiency = "fair";
+    else costEfficiency = "poor";
+
+    // Generate improvement recommendations based on industry data and loan specifics
+    const improvements: LoanResult['improvements'] = [];
+
+    const currentMarket = marketRates[loanType as keyof typeof marketRates];
+    
+    // High interest rate recommendations - more specific thresholds
+    if (interestRate > currentMarket.fair) {
+      const potentialRate = currentMarket.good;
+      const newMonthlyPayment = loanAmount * ((potentialRate/100/12 * Math.pow(1 + potentialRate/100/12, totalPayments)) / 
+                                            (Math.pow(1 + potentialRate/100/12, totalPayments) - 1));
+      const potentialSavings = totalInterest - ((newMonthlyPayment * totalPayments) - loanAmount);
+      
+      improvements.push({
+        action: `Refinance to market rate - your ${interestRate}% is ${(interestRate - currentMarket.good).toFixed(1)}% above prime ${loanType} rates`,
+        impact: `Save $${Math.round(potentialSavings).toLocaleString()} over loan term (reduce payment to $${Math.round(newMonthlyPayment).toLocaleString()}/month)`,
+        timeframe: interestRate > currentMarket.fair ? "Immediate priority" : "30-60 days",
+        priority: interestRate > currentMarket.fair ? "high" : "medium"
+      });
+    }
+
+    // Loan term optimization - loan-type specific recommendations
+    const optimalTerms = {
+      personal: { min: 24, max: 60, optimal: 36 },
+      auto: { min: 36, max: 72, optimal: 48 },
+      student: { min: 120, max: 300, optimal: 120 },
+      business: { min: 12, max: 60, optimal: 36 }
+    };
+
+    const optimal = optimalTerms[loanType as keyof typeof optimalTerms];
+    if (loanTerm > optimal.optimal && loanType !== 'student') {
+      const optimalPayment = loanAmount * ((monthlyRate * Math.pow(1 + monthlyRate, optimal.optimal)) / 
+                                         (Math.pow(1 + monthlyRate, optimal.optimal) - 1));
+      const optimalSavings = totalInterest - ((optimalPayment * optimal.optimal) - loanAmount);
+      const paymentIncrease = optimalPayment - monthlyPayment;
+      
+      if (paymentIncrease > 0) {
+        improvements.push({
+          action: `Optimize to ${Math.round(optimal.optimal/12)} year term - industry standard for ${loanType} loans`,
+          impact: `Save $${Math.round(optimalSavings).toLocaleString()} in interest (payment increases $${Math.round(paymentIncrease).toLocaleString()}/month)`,
+          timeframe: "At next refinance opportunity",
+          priority: optimalSavings > loanAmount * 0.05 ? "medium" : "low"
+        });
+      }
+    }
+
+    // Dynamic extra payment recommendations based on loan size and term
+    const suggestedExtraPercent = loanAmount > 50000 ? 0.05 : loanAmount > 20000 ? 0.10 : 0.15;
+    const extraPayment = Math.round(monthlyPayment * suggestedExtraPercent);
+    
+    if (extraPayment >= 25 && loanTerm > 24) {
+      // Calculate precise payoff with extra payments
+      let balance = loanAmount;
+      let month = 0;
+      let totalInterestWithExtra = 0;
+      
+      while (balance > 0.01 && month < totalPayments) {
+        const interestPayment = balance * monthlyRate;
+        const principalPayment = Math.min(balance, (monthlyPayment + extraPayment) - interestPayment);
+        totalInterestWithExtra += interestPayment;
+        balance -= principalPayment;
+        month++;
+        
+        if (principalPayment <= 0) break; // Safety check
+      }
+      
+      const monthsSaved = totalPayments - month;
+      const interestSaved = totalInterest - totalInterestWithExtra;
+      const yearsSaved = monthsSaved / 12;
+      
+      if (monthsSaved > 6 && interestSaved > 500) { // Only show if meaningful impact
+        improvements.push({
+          action: `Add $${extraPayment}/month principal payment (${Math.round(suggestedExtraPercent * 100)}% of monthly payment)`,
+          impact: `Finish ${yearsSaved >= 1 ? `${yearsSaved.toFixed(1)} years` : `${monthsSaved} months`} early, save $${Math.round(interestSaved).toLocaleString()}`,
+          timeframe: "Start with next payment",
+          priority: interestSaved > totalInterest * 0.15 ? "high" : "medium"
+        });
+      }
+    }
+
+    // Debt consolidation - more specific criteria
+    if (loanType === 'personal' && interestRate > 12 && loanAmount < 40000) {
+      improvements.push({
+        action: "Explore debt consolidation loan or balance transfer",
+        impact: `Personal loan rates for good credit: ${currentMarket.good}%-${currentMarket.fair}% (potential ${(interestRate - currentMarket.fair).toFixed(1)}% reduction)`,
+        timeframe: "60-90 days",
+        priority: "high"
+      });
+    }
+
+    // Credit utilization for secured loans
+    if ((loanType === 'auto' && interestRate > currentMarket.good + 2) || 
+        (loanType === 'personal' && interestRate > currentMarket.good + 3)) {
+      improvements.push({
+        action: "Improve credit score for better rates on future loans",
+        impact: `Each 50-point credit increase can lower rates by 1-2% (worth $${Math.round(totalInterest * 0.15).toLocaleString()} in lifetime savings)`,
+        timeframe: "6-12 months",
+        priority: "low"
+      });
+    }
+
+    // Bi-weekly payment strategy for longer-term loans
+    if (loanTerm >= 48 && monthlyPayment > 200) {
+      const biWeeklyPayment = monthlyPayment / 2;
+      // Approximation: bi-weekly = 26 payments/year vs 12 monthly
+      const effectiveExtraAnnualPayment = biWeeklyPayment * 2; // 2 extra payments per year
+      const biWeeklyMonths = Math.log(1 + (loanAmount * monthlyRate) / (biWeeklyPayment * 26/12)) / Math.log(1 + monthlyRate);
+      const biWeeklySavings = totalInterest - (biWeeklyPayment * 26 * (biWeeklyMonths/12) - loanAmount);
+      
+      if (biWeeklySavings > 1000 && biWeeklyMonths < totalPayments - 12) {
+        improvements.push({
+          action: `Switch to bi-weekly payments ($${Math.round(biWeeklyPayment).toLocaleString()} every 2 weeks)`,
+          impact: `Save $${Math.round(biWeeklySavings).toLocaleString()} and finish ${Math.round((totalPayments - biWeeklyMonths)/12 * 10)/10} years early`,
+          timeframe: "Next payment cycle",
+          priority: "medium"
+        });
+      }
+    }
+
     return {
       monthlyPayment,
       totalPayment,
       totalInterest,
       payoffDate,
-      monthlyBreakdown
+      monthlyBreakdown,
+      improvements: improvements.slice(0, 4), // Limit to top 4 recommendations
+      loanAnalysis: {
+        totalInterestRatio,
+        effectiveRate,
+        costEfficiency
+      }
     };
   }, [loanAmount, interestRate, loanTerm]);
 
@@ -136,7 +305,8 @@ export default function LoanCalculator() {
         description="Calculate loan payments for personal, auto, student, and business loans. Free loan calculator with amortization schedule."
         url="https://mudget.finance/tools/loan-calculator"
       />
-      <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
+      <BreadcrumbStructuredData items={breadcrumbItems} />
+      <Nav AppURL="https://app.mudget.finance" />
       
       <main className="container mx-auto px-4 py-12">
         <motion.div
@@ -145,6 +315,20 @@ export default function LoanCalculator() {
           transition={{ duration: 0.6 }}
           className="max-w-6xl mx-auto"
         >
+          {/* Breadcrumb Navigation */}
+          <motion.nav
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-6"
+          >
+            <Link href="/" className="hover:text-[#6ae58d] transition-colors">Home</Link>
+            <span>/</span>
+            <Link href="/tools" className="hover:text-[#6ae58d] transition-colors">Financial Tools</Link>
+            <span>/</span>
+            <span className="text-gray-900 dark:text-gray-100">Loan Calculator</span>
+          </motion.nav>
+
           {/* Header */}
           <div className="text-center mb-12">
             <motion.div
@@ -408,12 +592,112 @@ export default function LoanCalculator() {
                   </CardContent>
                 </Card>
               </motion.div>
+             
+            </motion.div>
+          </div>
 
-              {/* CTA to Mudget */}
-              <motion.div
+          {/* Loan Cost Analysis */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-16"
+          >
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle>Loan Cost Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">Total Interest Cost:</span>
+                    <span className="font-semibold">{results.loanAnalysis.totalInterestRatio.toFixed(1)}% of loan amount</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">Effective Annual Rate:</span>
+                    <span className="font-semibold">{results.loanAnalysis.effectiveRate.toFixed(2)}%</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">Market Competitiveness:</span>
+                    <Badge 
+                      variant={results.loanAnalysis.costEfficiency === 'excellent' ? 'default' : 
+                              results.loanAnalysis.costEfficiency === 'good' ? 'secondary' : 
+                              results.loanAnalysis.costEfficiency === 'fair' ? 'default' : 'destructive'}
+                      className={results.loanAnalysis.costEfficiency === 'excellent' ? 'bg-green-100 text-green-800' : 
+                                results.loanAnalysis.costEfficiency === 'good' ? 'bg-blue-100 text-blue-800' : 
+                                results.loanAnalysis.costEfficiency === 'fair' ? 'bg-yellow-100 text-yellow-800' : ''}
+                    >
+                      {results.loanAnalysis.costEfficiency.charAt(0).toUpperCase() + results.loanAnalysis.costEfficiency.slice(1)}
+                    </Badge>
+                  </div>
+                  <div className="mt-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <strong>Analysis:</strong> This compares your loan rate against average 2024 market rates for {loanType} loans. 
+                      Lower interest rates and shorter terms minimize total borrowing costs.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.section>
+
+          {/* Loan Improvement Recommendations */}
+          {results.improvements.length > 0 && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mt-12"
+            >
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>Loan Optimization Plan</CardTitle>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Strategies to reduce interest costs and pay off your loan faster
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4">
+                    {results.improvements.map((improvement, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-lg border-l-4 ${
+                          improvement.priority === 'high'
+                            ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                            : improvement.priority === 'medium'
+                            ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20'
+                            : 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge 
+                            variant={improvement.priority === 'high' ? 'destructive' : 
+                                    improvement.priority === 'medium' ? 'default' : 'secondary'}
+                          >
+                            {improvement.priority} priority
+                          </Badge>
+                          <span className="text-sm text-gray-500">{improvement.timeframe}</span>
+                        </div>
+                        <p className="font-medium mb-1">{improvement.action}</p>
+                        <p className="text-sm text-green-600 font-medium">
+                          Potential impact: {improvement.impact}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.section>
+            
+          )}
+           {/* CTA to Mudget */}
+           <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
+                className='mt-16'
               >
                 <Card className="bg-gradient-to-r from-[#6ae58d] to-[#5ad17c] text-black shadow-lg">
                   <CardContent className="p-6 text-center">
@@ -421,17 +705,24 @@ export default function LoanCalculator() {
                     <p className="mb-4">Track loan payments and debt payoff progress in your Financial Vitals dashboard.</p>
                     <Button
                       asChild
-                      className="bg-black text-white hover:bg-gray-800"
+                      className="bg-black text-white hover:bg-gray-800 mr-4"
                     >
                       <a href="https://app.mudget.finance/waitlist">
                         Organize with Mudget
                       </a>
                     </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="border-black text-black hover:bg-black/10"
+                    >
+                      <Link href="/tools/credit-score-calculator">
+                        Try Credit Score Calculator
+                      </Link>
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
-            </motion.div>
-          </div>
         </motion.div>
       </main>
       <Footer />

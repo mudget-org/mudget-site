@@ -225,7 +225,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-        <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
+        <Nav  AppURL="https://app.mudget.finance" />
         <article className="container mx-auto px-4 py-8">
       <div className="mb-8 text-center relative w-full h-[70vh] bg-gray-900 dark:bg-gray-800">
         <div className="w-full z-10 flex flex-col items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">

@@ -1,10 +1,23 @@
 // Feature flags configuration
 export const featureFlags = {
-  // Hide Why Mudget section and pages for now - can be enabled later for SEO
-  showWhyMudgetSection: false,
+  // Show Why Mudget section and pages 
+  showWhyMudgetSection: true,
+  
+  // Individual competitor comparison pages
+  showVsMint: false,
+  showVsYnab: false,
+  showVsEverydollar: false,
+  showVsPocketguard: false,
+  showVsSpreadsheets: true,
+  
+  // Spreadsheet comparison page sections
+  showSpreadsheetSuccessStory: false,
+  showSpreadsheetMobileComparison: false,
+  
+  // Pricing page
+  showPricingPage: true,
   
   // Add other feature flags here as needed
-  // showPricingSection: true,
   // showNewCalculator: false,
 } as const;
 

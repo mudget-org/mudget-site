@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Linkedin, Mail, Youtube } from 'lucide-react';
+import { Linkedin, Youtube } from 'lucide-react';
 import { isFeatureEnabled } from '@/utils/featureFlags';
 import Logo from '@/assets/MudgetTitleDark.png';
 
@@ -106,6 +106,11 @@ export default function Footer() {
               <Link href="/about" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 About
               </Link>
+              {isFeatureEnabled('showPricingPage') && (
+                <Link href="/pricing" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                  Pricing
+                </Link>
+              )}
             </nav>
           </div>
 
@@ -114,21 +119,31 @@ export default function Footer() {
             <div className="space-y-4">
               <h4 className="font-semibold text-gray-900 dark:text-gray-100">Why Mudget</h4>
               <nav className="space-y-2">
-                <Link href="/why-mudget/vs-mint" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                  vs Mint
-                </Link>
-                <Link href="/why-mudget/vs-ynab" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                  vs YNAB
-                </Link>
-                <Link href="/why-mudget/vs-everydollar" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                  vs EveryDollar
-                </Link>
-                <Link href="/why-mudget/vs-pocketguard" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                  vs PocketGuard
-                </Link>
-                <Link href="/why-mudget/vs-spreadsheets" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
-                  vs Spreadsheets
-                </Link>
+                {isFeatureEnabled('showVsMint') && (
+                  <Link href="/why-mudget/vs-mint" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                    vs Mint
+                  </Link>
+                )}
+                {isFeatureEnabled('showVsYnab') && (
+                  <Link href="/why-mudget/vs-ynab" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                    vs YNAB
+                  </Link>
+                )}
+                {isFeatureEnabled('showVsEverydollar') && (
+                  <Link href="/why-mudget/vs-everydollar" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                    vs EveryDollar
+                  </Link>
+                )}
+                {isFeatureEnabled('showVsPocketguard') && (
+                  <Link href="/why-mudget/vs-pocketguard" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                    vs PocketGuard
+                  </Link>
+                )}
+                {isFeatureEnabled('showVsSpreadsheets') && (
+                  <Link href="/why-mudget/vs-spreadsheets" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                    vs Spreadsheets
+                  </Link>
+                )}
               </nav>
             </div>
           )}

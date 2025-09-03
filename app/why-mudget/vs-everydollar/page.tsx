@@ -112,7 +112,7 @@ export default function MudgetVsEveryDollarPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
+      <Nav  AppURL="https://app.mudget.finance" />
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         {/* Header */}
         <motion.div

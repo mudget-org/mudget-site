@@ -2,12 +2,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, Clock, Zap, Users, Shield, RefreshCw, TrendingUp, AlertTriangle, Smartphone } from 'lucide-react';
+import { X, Clock, Zap, Users, Shield, RefreshCw, TrendingUp, AlertTriangle, Smartphone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BreadcrumbStructuredData } from '@/components/StructuredData';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { isFeatureEnabled } from '@/utils/featureFlags';
 
 const painPoints = [
   {
@@ -173,7 +174,7 @@ export default function VsSpreadsheetsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <BreadcrumbStructuredData items={breadcrumbItems} />
-      <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
+      <Nav AppURL="https://app.mudget.finance" />
       
       <main className="container mx-auto px-4 py-12">
         <motion.div
@@ -301,7 +302,12 @@ export default function VsSpreadsheetsPage() {
           >
             <h2 className="text-3xl font-bold text-center mb-12">Detailed Comparison</h2>
             <div className="space-y-8">
-              {comparisonPoints.map((comparison, index) => (
+              {comparisonPoints
+                .filter(comparison => 
+                  comparison.category !== "Mobile Access" || 
+                  isFeatureEnabled('showSpreadsheetMobileComparison')
+                )
+                .map((comparison, index) => (
                 <motion.div
                   key={comparison.category}
                   initial={{ opacity: 0, y: 20 }}
@@ -345,41 +351,43 @@ export default function VsSpreadsheetsPage() {
           </motion.div>
 
           {/* Success Story */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <Card className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 border-blue-200 dark:border-blue-700">
-              <CardContent className="p-8">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold mb-6">Real Couple, Real Results</h2>
-                  <blockquote className="text-lg italic mb-4 text-gray-700 dark:text-gray-300">
-                    &quot;We spent 3 years wrestling with Excel spreadsheets. Every month was a nightmare of version conflicts and manual data entry. Since switching to Mudget, we&apos;ve saved 4+ hours monthly and actually enjoy our budget meetings now!&quot;
-                  </blockquote>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    — Sarah & Mike, Mudget Users Since 2023
-                  </p>
-                  <div className="grid grid-cols-3 gap-4 mt-8 max-w-md mx-auto">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#6ae58d]">4+ hrs</div>
-                      <div className="text-xs text-gray-500">Saved Monthly</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#6ae58d]">100%</div>
-                      <div className="text-xs text-gray-500">Accuracy</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#6ae58d]">0</div>
-                      <div className="text-xs text-gray-500">Version Conflicts</div>
+          {isFeatureEnabled('showSpreadsheetSuccessStory') && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mb-16"
+            >
+              <Card className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 border-blue-200 dark:border-blue-700">
+                <CardContent className="p-8">
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold mb-6">Real Couple, Real Results</h2>
+                    <blockquote className="text-lg italic mb-4 text-gray-700 dark:text-gray-300">
+                      &quot;We spent 3 years wrestling with Excel spreadsheets. Every month was a nightmare of version conflicts and manual data entry. Since switching to Mudget, we&apos;ve saved 4+ hours monthly and actually enjoy our budget meetings now!&quot;
+                    </blockquote>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      — Sarah & Mike, Mudget Users Since 2023
+                    </p>
+                    <div className="grid grid-cols-3 gap-4 mt-8 max-w-md mx-auto">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-[#6ae58d]">4+ hrs</div>
+                        <div className="text-xs text-gray-500">Saved Monthly</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-[#6ae58d]">100%</div>
+                        <div className="text-xs text-gray-500">Accuracy</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-[#6ae58d]">0</div>
+                        <div className="text-xs text-gray-500">Version Conflicts</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
 
           {/* CTA Section */}
           <motion.div
@@ -393,7 +401,7 @@ export default function VsSpreadsheetsPage() {
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold mb-4">Ready to Ditch the Spreadsheets?</h2>
                 <p className="text-lg mb-6 max-w-2xl mx-auto">
-                  Join  of couples who&apos;ve upgraded from spreadsheets to smart, automated budgeting with Mudget.
+                  Join all the other couples who&apos;ve upgraded from spreadsheets to smart, automated budgeting with Mudget.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
@@ -404,7 +412,7 @@ export default function VsSpreadsheetsPage() {
                       Start Your Free Trial
                     </a>
                   </Button>
-                  <Button
+                  {/* <Button
                     asChild
                     variant="outline"
                     className="border-black text-black hover:bg-black/10"
@@ -412,10 +420,10 @@ export default function VsSpreadsheetsPage() {
                     <a href="/why-mudget/vs-competition">
                       See vs Competition
                     </a>
-                  </Button>
+                  </Button> */}
                 </div>
                 <p className="text-sm mt-4 opacity-80">
-                  No credit card required • Import your spreadsheet data • Cancel anytime
+                  Free 34 day trial • Cancel anytime
                 </p>
               </CardContent>
             </Card>

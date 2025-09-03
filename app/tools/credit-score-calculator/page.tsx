@@ -16,6 +16,7 @@ import { CalculatorStructuredData, FAQStructuredData, BreadcrumbStructuredData }
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import NextLink from 'next/link';
 
 interface CreditScoreResult {
   estimatedScore: number;
@@ -339,7 +340,7 @@ function CreditScoreCalculatorContent() {
       />
       <FAQStructuredData faqs={creditScoreFAQs} />
       <BreadcrumbStructuredData items={breadcrumbItems} />
-      <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
+      <Nav AppURL="https://app.mudget.finance" />
       
       <main className="container mx-auto px-4 py-12">
         <motion.div
@@ -348,6 +349,20 @@ function CreditScoreCalculatorContent() {
           transition={{ duration: 0.6 }}
           className="max-w-6xl mx-auto"
         >
+          {/* Breadcrumb Navigation */}
+          <motion.nav
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-6"
+          >
+            <NextLink href="/" className="hover:text-[#6ae58d] transition-colors">Home</NextLink>
+            <span>/</span>
+            <NextLink href="/tools" className="hover:text-[#6ae58d] transition-colors">Financial Tools</NextLink>
+            <span>/</span>
+            <span className="text-gray-900 dark:text-gray-100">Credit Score Calculator</span>
+          </motion.nav>
+
           {/* Header */}
           <div className="text-center mb-12">
             <motion.div
@@ -722,7 +737,7 @@ function CreditScoreCalculatorContent() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     asChild
-                    className="bg-black text-white hover:bg-gray-800"
+                    className="bg-black text-white hover:bg-gray-800 mr-4"
                   >
                     <a href="https://app.mudget.finance/waitlist">
                       Get Started with Mudget
@@ -733,9 +748,9 @@ function CreditScoreCalculatorContent() {
                     variant="outline"
                     className="border-black text-black hover:bg-black/10"
                   >
-                    <a href="/tools/mortgage-calculator">
+                    <NextLink href="/tools/mortgage-calculator">
                       Try Mortgage Calculator
-                    </a>
+                    </NextLink>
                   </Button>
                 </div>
               </CardContent>

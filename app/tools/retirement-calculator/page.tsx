@@ -9,11 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CalculatorStructuredData } from '@/components/StructuredData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 interface RetirementResult {
   finalAmount: number;
@@ -26,6 +28,17 @@ interface RetirementResult {
     balance: number;
     growth: number;
   }[];
+  improvements: Array<{
+    action: string;
+    impact: string;
+    timeframe: string;
+    priority: "high" | "medium" | "low";
+  }>;
+  benchmarks: {
+    ageMultiplier: number;
+    recommendedAmount: number;
+    status: "ahead" | "ontrack" | "behind";
+  };
 }
 
 export default function RetirementCalculator() {
@@ -46,7 +59,13 @@ export default function RetirementCalculator() {
         finalAmount: 0,
         totalContributions: 0,
         totalGrowth: 0,
-        yearlyBreakdown: []
+        yearlyBreakdown: [],
+        improvements: [],
+        benchmarks: {
+          ageMultiplier: 0,
+          recommendedAmount: 0,
+          status: "behind" as const
+        }
       };
     }
 
@@ -54,7 +73,7 @@ export default function RetirementCalculator() {
     const futureValueCurrent = currentSavings * Math.pow(1 + annualReturn / 100, yearsToRetirement);
 
     // Future Value of monthly contributions (annuity)
-    const futureValueContributions = monthlyContribution * 
+    const futureValueContributions = monthlyContribution *
       ((Math.pow(1 + monthlyReturn, totalMonths) - 1) / monthlyReturn);
 
     const finalAmount = futureValueCurrent + futureValueContributions;
@@ -78,11 +97,115 @@ export default function RetirementCalculator() {
       });
     }
 
+    // Calculate retirement benchmarks based on industry standards from Fidelity, Vanguard, etc.
+    // Standard benchmarks: 1x income by 30, 3x by 40, 5x by 50, 7x by 60, 10x by 67
+    const estimatedAnnualIncome = annualContribution * 10; // Conservative estimate based on 10% savings rate
+
+    let ageMultiplier: number;
+    if (currentAge <= 30) ageMultiplier = 1;
+    else if (currentAge <= 35) ageMultiplier = 2;
+    else if (currentAge <= 40) ageMultiplier = 3;
+    else if (currentAge <= 45) ageMultiplier = 4;
+    else if (currentAge <= 50) ageMultiplier = 5;
+    else if (currentAge <= 55) ageMultiplier = 6;
+    else if (currentAge <= 60) ageMultiplier = 7;
+    else if (currentAge <= 65) ageMultiplier = 8;
+    else ageMultiplier = 10;
+
+    const recommendedByAge = estimatedAnnualIncome * ageMultiplier;
+    const currentTotal = currentSavings;
+
+    let benchmarkStatus: "ahead" | "ontrack" | "behind";
+    if (currentTotal >= recommendedByAge * 1.2) benchmarkStatus = "ahead";
+    else if (currentTotal >= recommendedByAge * 0.8) benchmarkStatus = "ontrack";
+    else benchmarkStatus = "behind";
+
+    // Generate improvement recommendations
+    const improvements: RetirementResult['improvements'] = [];
+
+    // Calculate what they need for basic retirement (25x annual expenses, 4% rule)
+    const basicRetirementGoal = estimatedAnnualIncome * 25; // 4% safe withdrawal rate
+    const currentProjectedShortfall = basicRetirementGoal - finalAmount;
+
+    if (currentProjectedShortfall > 0) {
+      // Calculate needed monthly increase to meet basic goal
+      const neededIncrease = Math.round(currentProjectedShortfall / (yearsToRetirement * 12 * 0.6)); // Account for growth
+      if (neededIncrease > 0) {
+        improvements.push({
+          action: `Increase monthly savings by $${neededIncrease.toLocaleString()} to meet standard retirement income replacement (80% of current income)`,
+          impact: `Bridge $${currentProjectedShortfall.toLocaleString()} shortfall for secure retirement`,
+          timeframe: `${yearsToRetirement} years`,
+          priority: "high"
+        });
+      }
+    }
+
+    // Dynamic early retirement calculation - only show if significantly ahead
+    const comfortableRetirementGoal = estimatedAnnualIncome * 30; // More conservative 3.33% withdrawal rate
+    if (finalAmount > comfortableRetirementGoal && yearsToRetirement > 10) {
+      const excessAmount = finalAmount - comfortableRetirementGoal;
+      const yearsEarlier = Math.min(Math.floor(excessAmount / (estimatedAnnualIncome * 2)), 5); // Conservative estimate
+
+      if (yearsEarlier >= 2) {
+        improvements.push({
+          action: `You're on track to exceed retirement needs - consider retiring ${yearsEarlier} years early at age ${retirementAge - yearsEarlier}`,
+          impact: `${yearsEarlier} extra years of freedom with $${Math.round(finalAmount - comfortableRetirementGoal).toLocaleString()} surplus`,
+          timeframe: "Long-term planning",
+          priority: "low"
+        });
+      }
+    }
+
+    // Contribution optimization
+    if (monthlyContribution < 500) {
+      improvements.push({
+        action: "Increase monthly contributions - even $50 more can make a significant difference",
+        impact: `+$${(50 * ((Math.pow(1 + monthlyReturn, totalMonths) - 1) / monthlyReturn)).toLocaleString()} at retirement`,
+        timeframe: `${yearsToRetirement} years`,
+        priority: "medium"
+      });
+    }
+
+    // Age-based recommendations
+    if (currentAge < 35 && annualReturn < 8) {
+      improvements.push({
+        action: "Consider more aggressive growth investments given your long time horizon",
+        impact: "+1-2% annual returns could double your retirement savings",
+        timeframe: "Long-term",
+        priority: "medium"
+      });
+    }
+
+    if (currentAge > 50 && currentSavings < estimatedAnnualIncome * 5) {
+      improvements.push({
+        action: "Catch-up contributions: maximize 401(k) and IRA contributions",
+        impact: "Up to $30,000+ additional annual savings capacity",
+        timeframe: "Immediate",
+        priority: "high"
+      });
+    }
+
+    // Emergency fund check (assumed relationship between retirement savings and emergency prep)
+    if (currentSavings < annualContribution * 0.5) {
+      improvements.push({
+        action: "Build emergency fund first (3-6 months expenses) before focusing on retirement",
+        impact: "Financial security and avoid early retirement account withdrawals",
+        timeframe: "6-12 months",
+        priority: "high"
+      });
+    }
+
     return {
       finalAmount,
       totalContributions,
       totalGrowth,
-      yearlyBreakdown
+      yearlyBreakdown,
+      improvements: improvements.slice(0, 4), // Limit to top 4 recommendations
+      benchmarks: {
+        ageMultiplier,
+        recommendedAmount: recommendedByAge,
+        status: benchmarkStatus
+      }
     };
   }, [currentAge, retirementAge, currentSavings, monthlyContribution, annualReturn]);
 
@@ -124,13 +247,13 @@ export default function RetirementCalculator() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <CalculatorStructuredData 
+      <CalculatorStructuredData
         name="Free Retirement Calculator"
         description="Calculate retirement savings with compound interest projections. Free retirement planning calculator with yearly breakdown."
         url="https://mudget.finance/tools/retirement-calculator"
       />
-      <Nav showPricesSection={false} AppURL="https://app.mudget.finance" />
-      
+      <Nav AppURL="https://app.mudget.finance" />
+
       <main className="container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -291,9 +414,9 @@ export default function RetirementCalculator() {
                     <span className="text-gray-600 dark:text-gray-300">Monthly Goal:</span>
                     <span className="font-semibold">${monthlyContribution.toLocaleString()}</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   {/* Growth Visualization */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
@@ -301,8 +424,8 @@ export default function RetirementCalculator() {
                       <span>{((results.totalContributions / results.finalAmount) * 100).toFixed(1)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-500 h-2 rounded-full" 
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
                         style={{ width: `${(results.totalContributions / results.finalAmount) * 100}%` }}
                       />
                     </div>
@@ -311,15 +434,15 @@ export default function RetirementCalculator() {
                       <span>{((results.totalGrowth / results.finalAmount) * 100).toFixed(1)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-500 h-2 rounded-full" 
+                      <div
+                        className="bg-green-500 h-2 rounded-full"
                         style={{ width: `${(results.totalGrowth / results.finalAmount) * 100}%` }}
                       />
                     </div>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex gap-2">
                     <Button
                       onClick={exportToCSV}
@@ -354,36 +477,36 @@ export default function RetirementCalculator() {
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={results.yearlyBreakdown} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
                           <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis 
-                            dataKey="age" 
+                          <XAxis
+                            dataKey="age"
                             label={{ value: 'Age', position: 'insideBottom', offset: -10 }}
                           />
-                          <YAxis 
+                          <YAxis
                             tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
                             label={{ value: 'Amount ($)', angle: -90, position: 'insideLeft' }}
                           />
-                          <Tooltip 
+                          <Tooltip
                             formatter={(value: number) => [`$${value.toLocaleString()}`, '']}
                             labelFormatter={(age) => `Age ${age}`}
                           />
-                          <Legend 
-                            verticalAlign="bottom" 
+                          <Legend
+                            verticalAlign="bottom"
                             height={36}
                             iconType="line"
                             wrapperStyle={{ paddingTop: '20px' }}
                           />
-                          <Line 
-                            type="monotone" 
-                            dataKey="balance" 
-                            stroke="#6ae58d" 
+                          <Line
+                            type="monotone"
+                            dataKey="balance"
+                            stroke="#6ae58d"
                             strokeWidth={3}
                             name="Total Balance"
                             dot={{ fill: '#6ae58d', strokeWidth: 2, r: 4 }}
                           />
-                          <Line 
-                            type="monotone" 
-                            dataKey={(entry) => currentSavings + (entry.year * monthlyContribution * 12)} 
-                            stroke="#3b82f6" 
+                          <Line
+                            type="monotone"
+                            dataKey={(entry) => currentSavings + (entry.year * monthlyContribution * 12)}
+                            stroke="#3b82f6"
                             strokeWidth={2}
                             strokeDasharray="5 5"
                             name="Contributions Only"
@@ -401,6 +524,7 @@ export default function RetirementCalculator() {
                 </Card>
               )}
 
+
               {/* Disclaimer */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -417,29 +541,64 @@ export default function RetirementCalculator() {
                 </Card>
               </motion.div>
 
-              {/* CTA to Mudget */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <Card className="bg-gradient-to-r from-[#6ae58d] to-[#5ad17c] text-black shadow-lg">
-                  <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold mb-2">Track Your Financial Vitals</h3>
-                    <p className="mb-4">Monitor retirement savings alongside all your financial goals with Mudget.</p>
-                    <Button
-                      asChild
-                      className="bg-black text-white hover:bg-gray-800"
-                    >
-                      <a href="https://app.mudget.finance/waitlist">
-                        Plan with Mudget
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
+
             </motion.div>
           </div>
+
+          {/* Retirement Benchmarks */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-16"
+          >
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle>Retirement Readiness</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="mt-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <strong>Industry Benchmark:</strong> Financial advisors recommend having 1x your annual income saved by 30, 3x by 40, 5x by 50, 7x by 60, and 10x by 67.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.section>
+        </motion.div>
+        {/* CTA to Mudget */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className='mt-16'
+        >
+          <Card className="bg-gradient-to-r from-[#6ae58d] to-[#5ad17c] text-black shadow-lg">
+            <CardContent className="p-6 text-center">
+              <h3 className="text-xl font-bold mb-2">Track Your Financial Vitals</h3>
+              <p className="mb-4">Monitor retirement savings alongside all your financial goals with Mudget.</p>
+              <Button
+                asChild
+                className="bg-black text-white hover:bg-gray-800 mr-4"
+              >
+                <a href="https://app.mudget.finance/waitlist">
+                  Plan with Mudget
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="border-black text-black hover:bg-black/10"
+              >
+                <Link href="/tools/mortgage-calculator">
+                  Try Mortgage Calculator
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       </main>
       <Footer />

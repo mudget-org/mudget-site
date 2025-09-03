@@ -138,7 +138,7 @@ export default function LandingPage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Nav showPricesSection={false} AppURL={AppURL} />
+            <Nav AppURL={AppURL} />
             <main className="flex-1">
                 <section className="w-full flex justify-center py-12 md:py-24 lg:py-32 xl:py-48 relative overflow-hidden">
                     {/* Background Elements */}
@@ -579,6 +579,97 @@ export default function LandingPage() {
                         </section>
                     )
                     : <></>}
+
+                {/* Plaid Security Section */}
+                <section className="w-full py-16 md:py-20 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+                    <div className="container px-4 md:px-6 mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="text-center max-w-4xl mx-auto"
+                        >
+                            <div className="flex items-center justify-center gap-3 mb-8">
+                                <div className="w-2 h-2 rounded-full bg-[#6ae58d]" />
+                                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                                    Bank-Level Security
+                                </span>
+                                <div className="w-2 h-2 rounded-full bg-[#6ae58d]" />
+                            </div>
+
+                            <div className="flex items-center justify-center gap-4 mb-6">
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+                                    Powered by
+                                </h2>
+                                <div className="flex items-center gap-2">
+                                    {/* Official Plaid Logo */}
+<svg height="48" viewBox="0 0 77 29" xmlns="http://www.w3.org/2000/svg" className="css-1rdaj8m"><g fill="#111" fill-rule="evenodd"><path d="M37.3252 14.9546H36.2239V12.5005H37.2135C38.4162 12.5005 39.0177 12.9124 39.0177 13.7353C39.0177 14.5484 38.4537 14.9546 37.3252 14.9546ZM40.3753 10.9121C39.7365 10.3878 38.6455 10.126 37.1019 10.126H33.6211V20.617H36.2239V17.33H37.3893C38.8052 17.33 39.8431 17.0256 40.5028 16.417C41.2475 15.7359 41.6206 14.8291 41.6206 13.6961C41.6206 12.5218 41.2058 11.5939 40.3753 10.9121ZM46.0756 10.1256H43.3611V20.6173H49.2216V18.2421H46.0758L46.0756 10.1256ZM54.5063 16.9683L55.6241 13.382L56.7254 16.9683H54.5063ZM54.538 10.1256L50.275 20.6173H53.197L53.7559 19.0919H57.46L57.9707 20.6173H60.9256L56.6937 10.1256H54.538ZM62.2824 20.6173H64.9969V10.1256H62.2824V20.6173ZM71.1922 18.2422H70.0263V12.5005H71.2081C72.0385 12.5005 72.6766 12.7536 73.1239 13.2592C73.5712 13.7654 73.7944 14.4828 73.7944 15.4101C73.7944 17.2986 72.9266 18.2422 71.1922 18.2422ZM75.5353 12.0917C75.1737 11.588 74.7422 11.1849 74.2424 10.8806C73.4221 10.3769 72.3043 10.125 70.8885 10.125H67.3119V20.6167H71.4956C73.0068 20.6167 74.2209 20.135 75.1363 19.1701C76.0517 18.2052 76.5091 16.9261 76.5091 15.3319C76.5089 14.0633 76.1842 12.9835 75.5353 12.0917Z"></path><path d="M25.7629 26.2628L28 17.5309L24.9691 14.5001L27.9999 11.4691L25.7628 2.73706L17.0309 0.5L14.0001 3.531L10.969 0.50014L2.23706 2.73734L0 11.4691L3.03128 14.4999L0.00014 17.531L2.2372 26.2629L10.9691 28.5L14.0001 25.469L17.031 28.4999L25.7629 26.2628ZM15.7321 23.7371L18.6186 20.8505L22.2912 24.5233L17.6956 25.7007L15.7321 23.7371ZM11.1136 9.88154L14.0003 6.99502L16.8868 9.8814L14.0001 12.7679L11.1136 9.88154ZM12.2682 14.5L9.38154 17.3865L6.49502 14.5L9.38154 11.6135L12.2682 14.5ZM18.6187 11.6133L21.5053 14.5L18.6186 17.3865L15.7321 14.5L18.6187 11.6133ZM16.8867 19.1186L14.0001 22.0051L11.1135 19.1185L14.0001 16.2319L16.8867 19.1186ZM10.3044 25.7007L5.70864 24.5233L9.38154 20.8504L12.2682 23.7371L10.3044 25.7007ZM4.76308 16.2319L7.6496 19.1185L3.9767 22.7914L2.7993 18.1957L4.76308 16.2319ZM3.9767 6.20836L7.64974 9.8814L4.76308 12.7681L2.7993 10.8041L3.9767 6.20836ZM12.2683 5.26294L9.38168 8.1496L5.70892 4.4767L10.3047 3.2993L12.2683 5.26294ZM17.6959 3.2993L22.2915 4.4767L18.6186 8.14946L15.7321 5.26294L17.6959 3.2993ZM23.2372 12.7681L20.3505 9.8814L24.0233 6.20878L25.2007 10.8046L23.2372 12.7681ZM24.0233 22.7914L20.3505 19.1186L23.2372 16.2321L25.2007 18.1957L24.0233 22.7914Z"></path></g></svg>
+                                </div>
+                            </div>
+                            
+                            <p className="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+                                We use Plaid to securely connect your financial accounts. The same trusted technology 
+                                used by Venmo, Betterment, and thousands of other financial apps.
+                            </p>
+
+                            {/* Plaid Logo and Features */}
+                            <div className="grid items-center">
+
+                                <motion.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.4 }}
+                                    viewport={{ once: true }}
+                                    className="space-y-4"
+                                >
+                                    <div className="flex items-start gap-3 text-left">
+                                        <div className="w-6 h-6 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <div className="w-2 h-2 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold mb-1">256-bit Encryption</h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                The same security used by major banks and financial institutions
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3 text-left">
+                                        <div className="w-6 h-6 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <div className="w-2 h-2 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold mb-1">10,000+ Banks Supported</h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                Connect accounts from virtually any US bank or credit union
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </div>
+
+                            {/* Trust Badges */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                viewport={{ once: true }}
+                                className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700"
+                            >
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                                    Trusted by leading financial apps
+                                </p>
+                                <div className="flex items-center justify-center gap-8 opacity-60">
+                                    <span className="text-sm font-semibold">Venmo</span>
+                                    <span className="text-sm font-semibold">Betterment</span>
+                                    <span className="text-sm font-semibold">Acorns</span>
+                                    <span className="text-sm font-semibold">Robinhood</span>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+                </section>
 
                 <section
                     id="cta"
