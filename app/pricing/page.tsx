@@ -47,8 +47,8 @@ const features = [
 
 const faqs = [
   {
-    question: "How does the 34-day free trial work?",
-    answer: "You get full access to all Mudget features for 34 days. Credit card required to start. Cancel anytime before the trial ends and you won't be charged."
+    question: "How does the 40-day free trial work?",
+    answer: "You get full access to all Mudget features for 40 days. Credit card required to start. Cancel anytime before the trial ends and you won't be charged."
   },
   {
     question: "Can I cancel anytime?",
@@ -108,7 +108,7 @@ export default function PricingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-[#6ae58d]" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">34-Day Free Trial</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">40-Day Free Trial</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-[#6ae58d]" />
@@ -129,7 +129,7 @@ export default function PricingPage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Choose Your Plan</h2>
               <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Start with our monthly plan and upgrade as you grow. All paid plans include a 34-day free trial.
+                Start with our monthly plan and upgrade as you grow. All paid plans include a 40-day free trial.
               </p>
             </div>
             
@@ -234,7 +234,7 @@ export default function PricingPage() {
                   Join all the other couples who&apos;ve transformed their financial lives with Mudget.
                 </p>
                 <p className="text-sm opacity-80">
-                  Start your 34-day free trial today • Cancel anytime
+                  Start your 40-day free trial today • Cancel anytime
                 </p>
               </CardContent>
             </Card>

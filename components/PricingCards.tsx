@@ -36,7 +36,7 @@ const pricingPlans: PricingPlan[] = [
       'Advanced analytics',
       'Bill tracking & reminders (coming soon)',
       'Email support',
-      '34-day free trial'
+      '40-day free trial'
     ],
     stripePriceId: 'price_1RxzCoFxVqqpKakgpCwjaW9S',
     buttonText: 'Start Free Trial'
@@ -57,7 +57,7 @@ const pricingPlans: PricingPlan[] = [
       'Advanced analytics',
       'Bill tracking & reminders (coming soon)',
       'Priority support',
-      '34-day free trial'
+      '40-day free trial'
     ],
     popular: true,
     stripePriceId: 'price_1RxzCoFxVqqpKakgpCwjaW9S', // Replace with your actual Stripe price ID

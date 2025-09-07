@@ -482,24 +482,119 @@ export default function LandingPage() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 viewport={{ once: true }}
-                                className="bg-gradient-to-r from-[#6ae58d]/10 to-[#5ad17c]/10 p-8 rounded-lg"
+                                className="bg-gradient-to-r from-[#6ae58d]/10 to-[#5ad17c]/10 p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50"
                             >
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.6, delay: 0.4 }}
-                                    viewport={{ once: true }}
-                                    className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg"
-                                >
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <MessageCircle className="w-6 h-6 text-[#6ae58d]" />
-                                        <span className="font-semibold">Mudget AI</span>
+                                {/* Chat Interface */}
+                                <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden max-w-md mx-auto">
+                                    {/* Chat Header */}
+                                    <div className="bg-gradient-to-r from-[#6ae58d] to-[#5ad17c] px-4 py-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                                                <MessageCircle className="w-4 h-4 text-white" />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-white">Mudget AI</h3>
+                                                <p className="text-xs text-white/80">Always ready to help</p>
+                                            </div>
+                                            <div className="ml-auto">
+                                                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                                        &quot;You are on track to save an extra $240 this month! Move it to your vacation fund to reach your goal 2 months earlier.&quot;
-                                    </p>
-                                    <div className="text-xs text-gray-500">Just now</div>
-                                </motion.div>
+
+                                    {/* Chat Messages */}
+                                    <div className="p-4 space-y-4 h-80 overflow-hidden">
+                                        {/* User Message */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.5, delay: 0.6 }}
+                                            viewport={{ once: true }}
+                                            className="flex justify-end"
+                                        >
+                                            <div className="bg-[#6ae58d]/10 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%]">
+                                                <p className="text-sm">How much can I save this month for vacation?</p>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* AI Response */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.5, delay: 0.8 }}
+                                            viewport={{ once: true }}
+                                            className="flex justify-start"
+                                        >
+                                            <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%]">
+                                                <p className="text-sm mb-2">Based on your spending patterns, you're on track to save <strong className="text-[#6ae58d]">$240 extra</strong> this month! 🎉</p>
+                                                <p className="text-xs text-gray-600 dark:text-gray-400">If you move this to your vacation fund, you'll reach your goal <strong>2 months earlier</strong>.</p>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* User Follow-up */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.5, delay: 1.0 }}
+                                            viewport={{ once: true }}
+                                            className="flex justify-end"
+                                        >
+                                            <div className="bg-[#6ae58d]/10 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%]">
+                                                <p className="text-sm">That's awesome! What's helping me save more?</p>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* AI Response with insights */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.5, delay: 1.2 }}
+                                            viewport={{ once: true }}
+                                            className="flex justify-start"
+                                        >
+                                            <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%]">
+                                                <p className="text-sm mb-2">Great question! Here's what's working:</p>
+                                                <ul className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
+                                                    <li>• Dining out down 30% vs last month</li>
+                                                    <li>• No impulse purchases over $50</li>
+                                                    <li>• Groceries staying within budget</li>
+                                                </ul>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* Typing indicator */}
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            whileInView={{ opacity: 1 }}
+                                            transition={{ duration: 0.5, delay: 1.4 }}
+                                            viewport={{ once: true }}
+                                            className="flex justify-start"
+                                        >
+                                            <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-sm">
+                                                <div className="flex items-center gap-1">
+                                                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+
+                                    {/* Input Area */}
+                                    <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+                                        <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-full px-4 py-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Ask about your finances..."
+                                                className="flex-1 bg-transparent text-sm text-gray-600 dark:text-gray-300 placeholder-gray-400 focus:outline-none"
+                                                readOnly
+                                            />
+                                            <div className="w-6 h-6 bg-[#6ae58d] rounded-full flex items-center justify-center cursor-pointer">
+                                                <ChevronRight className="w-3 h-3 text-white" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </motion.div>
                         </div>
                     </div>
