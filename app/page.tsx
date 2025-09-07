@@ -526,8 +526,8 @@ export default function LandingPage() {
                                             className="flex justify-start"
                                         >
                                             <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%]">
-                                                <p className="text-sm mb-2">Based on your spending patterns, you're on track to save <strong className="text-[#6ae58d]">$240 extra</strong> this month! 🎉</p>
-                                                <p className="text-xs text-gray-600 dark:text-gray-400">If you move this to your vacation fund, you'll reach your goal <strong>2 months earlier</strong>.</p>
+                                                <p className="text-sm mb-2">Based on your spending patterns, you&apos;re on track to save <strong className="text-[#6ae58d]">$240 extra</strong> this month! 🎉</p>
+                                                <p className="text-xs text-gray-600 dark:text-gray-400">If you move this to your vacation fund, you&apos;ll reach your goal <strong>2 months earlier</strong>.</p>
                                             </div>
                                         </motion.div>
 
@@ -540,7 +540,7 @@ export default function LandingPage() {
                                             className="flex justify-end"
                                         >
                                             <div className="bg-[#6ae58d]/10 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%]">
-                                                <p className="text-sm">That's awesome! What's helping me save more?</p>
+                                                <p className="text-sm">That&apos;s awesome! What&apos;s helping me save more?</p>
                                             </div>
                                         </motion.div>
 
@@ -553,7 +553,7 @@ export default function LandingPage() {
                                             className="flex justify-start"
                                         >
                                             <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%]">
-                                                <p className="text-sm mb-2">Great question! Here's what's working:</p>
+                                                <p className="text-sm mb-2">Great question! Here&apos;s what&apos;s working:</p>
                                                 <ul className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
                                                     <li>• Dining out down 30% vs last month</li>
                                                     <li>• No impulse purchases over $50</li>
