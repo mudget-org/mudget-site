@@ -555,7 +555,7 @@ function InsuranceCalculatorContent() {
                             checked={educationGoals}
                             onCheckedChange={(checked) => setEducationGoals(checked as boolean)}
                           />
-                          <Label htmlFor="education">Planning to fund children's education</Label>
+                          <Label htmlFor="education">Planning to fund children&apos;s education</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Checkbox
@@ -1002,7 +1002,7 @@ function InsuranceCalculatorContent() {
                             💡 Pro Tip
                           </h4>
                           <p className="text-sm text-blue-700 dark:text-blue-300">
-                            Consider term life insurance for this amount. It's typically 10-20x cheaper 
+                            Consider term life insurance for this amount. It&apos;s typically 10-20x cheaper 
                             than whole life insurance and provides the same death benefit protection.
                           </p>
                         </div>
@@ -1150,7 +1150,7 @@ function InsuranceCalculatorContent() {
                               ❗ Gap Identified
                             </h4>
                             <p className="text-sm text-red-700 dark:text-red-300">
-                              You don't have employer disability insurance. Individual coverage 
+                              You don&apos;t have employer disability insurance. Individual coverage 
                               is important to protect your income if you become unable to work.
                             </p>
                           </div>
