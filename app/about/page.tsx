@@ -186,13 +186,13 @@ export default function AboutPage() {
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
                                         <MessageCircle className="w-5 h-5 text-[#6ae58d]" />
-                                        AI Chat & Voice
+                                        Advanced AI Technology
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-gray-600 dark:text-gray-300">
-                                        Skip generic financial advice. Chat or talk with your personal AI to get answers 
-                                        about your specific spending patterns and financial goals.
+                                        Powered by AI ambient agents, machine learning forecasting models, and orchestrated workflows through MCP. 
+                                        Your personal conversational AI understands your couple&apos;s unique financial situation and investment goals.
                                     </p>
                                 </CardContent>
                             </Card>
@@ -251,10 +251,10 @@ export default function AboutPage() {
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">Intelligent Assistance</h3>
                                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                                    <li>• Chat app with personalized AI</li>
-                                    <li>• Voice conversations with AI</li>
-                                    <li>• Auto-generated monthly budgets (Vitals)</li>
-                                    <li>• Spending pattern insights</li>
+                                    <li>• AI ambient agents for background monitoring</li>
+                                    <li>• ML forecasting for investment predictions</li>
+                                    <li>• Orchestrated AI workflows via MCP</li>
+                                    <li>• Conversational AI financial advisor</li>
                                 </ul>
                             </div>
                         </div>

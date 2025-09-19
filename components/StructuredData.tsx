@@ -46,7 +46,7 @@ export const OrganizationStructuredData = () => {
     "name": "Mudget Finance",
     "url": "https://mudget.finance",
     "logo": "https://mudget.finance/Mudgee.svg",
-    "description": "Financial Vitals Dashboard for Couples & Young Adults. Budget together with secure Plaid integration and AI-powered insights.",
+    "description": "AI-powered budget app designed for couples who invest together. Track expenses, manage investment goals, and build wealth as a team with secure bank integration.",
     "sameAs": [
       "https://twitter.com/mudget_finance",
       "https://www.linkedin.com/in/mudget-finance/"
@@ -71,9 +71,9 @@ export const WebApplicationStructuredData = () => {
   const webAppData: WebApplicationData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Mudget - Financial Vitals Dashboard",
+    "name": "Mudget - AI Budget App for Investing Couples",
     "url": "https://mudget.finance",
-    "description": "Budget together as a couple with Mudget's secure Plaid integration. AI-powered financial insights, goal tracking, and intuitive Financial Vitals dashboard.",
+    "description": "The AI-powered budget app designed for couples who invest together. Track expenses, manage investment goals, and get financial education together.",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "offers": {

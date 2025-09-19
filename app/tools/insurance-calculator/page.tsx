@@ -12,13 +12,8 @@ import {
   Heart, 
   DollarSign, 
   Users, 
-  Calculator,
-  AlertTriangle,
-  CheckCircle,
   TrendingUp,
   FileText,
-  Baby,
-  GraduationCap,
   Link
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

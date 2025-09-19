@@ -25,11 +25,11 @@ const AppURL = process.env.NEXT_PUBLIC_APP_URL || "https://app.mudget.finance";
 
 function AnimatedBadge() {
     const statements = [
-        "Perfect for Couples",
-        "Perfect for Individuals", 
-        "Perfect for Investors",
-        "Perfect for Experts",
-        "Perfect for Beginners"
+        "Perfect for Investing Couples",
+        "Perfect for Wealth Builders", 
+        "Perfect for Financial Teams",
+        "Perfect for Investment Partners",
+        "Perfect for Future Millionaires"
     ];
     
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -215,7 +215,7 @@ export default function LandingPage() {
                                     transition={{ duration: 0.8, delay: 0.4 }}
                                     className="mx-auto max-w-[700px] text-gray-600 md:text-xl dark:text-gray-300 leading-relaxed"
                                 >
-                                    The modern way to manage money as a team. Built for couples who want to budget together, connect their accounts securely, and get personalized financial guidance.
+                                    The modern way for investing couples to manage money together. Built for couples who want to budget, invest, and build wealth as a team with AI-powered financial insights.
                                 </motion.p>
                             </div>
 
@@ -352,7 +352,7 @@ export default function LandingPage() {
                                 Track, Budget, Collaborate, Plan
                             </h2>
                             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                                Everything you need to build a stronger financial future together
+                                Everything investing couples need to build wealth and track financial goals together
                             </p>
                         </motion.div>
 
@@ -360,21 +360,21 @@ export default function LandingPage() {
                             {[
                                 {
                                     icon: MessageCircle,
-                                    title: "Conversational AI",
-                                    description: "Chat or talk with your personal financial assistant. Get answers about your spending patterns, progress toward goals, and personalized recommendations.",
-                                    features: ["Text & voice conversations", "Personalized insights", "Goal tracking"]
+                                    title: "Personal AI Financial Advisor",
+                                    description: "Advanced conversational AI that understands your couple's financial situation. Powered by ambient agents and ML forecasting to deliver contextually relevant advice tailored to your investment goals.",
+                                    features: ["Natural language conversations", "Relationship-aware insights", "Investment strategy guidance"]
                                 },
                                 {
                                     icon: Users,
-                                    title: "Built for Couples",
-                                    description: "The only budgeting app designed specifically for partnerships. Share expenses, set joint goals, and make financial decisions together.",
-                                    features: ["1 free additional member", "Shared budgets & goals", "Transparent spending"]
+                                    title: "Built for Investing Couples",
+                                    description: "The only budgeting app designed for couples who invest together. Share investment goals, track portfolio performance, and make wealth-building decisions as a team.",
+                                    features: ["1 free additional member", "Shared investment goals", "Portfolio tracking"]
                                 },
                                 {
                                     icon: BarChart2,
-                                    title: "Financial Vitals",
-                                    description: "Smart budgets that adapt to your life. Auto-generated each month based on your actual spending patterns, not unrealistic projections.",
-                                    features: ["104+ default categories", "Custom categories", "Automatic adjustments"]
+                                    title: "AI-Powered Financial Vitals",
+                                    description: "Intelligent budgets powered by machine learning forecasting models. Auto-generated each month using ambient agents that learn your spending patterns and investment preferences.",
+                                    features: ["104+ smart categories", "ML-driven predictions", "Automatic portfolio adjustments"]
                                 },
                                 {
                                     icon: CreditCard,
@@ -437,6 +437,128 @@ export default function LandingPage() {
                                 </Link>
                             </Button>
                         </motion.div>
+                    </div>
+                </section>
+
+                {/* AI Technology Section */}
+                <section id="ai-technology" className="w-full flex justify-center py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
+                    <div className="container px-4 md:px-6">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-16"
+                        >
+                            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl mb-4">
+                                Advanced AI Architecture
+                            </h2>
+                            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                                Powered by cutting-edge AI technology designed specifically for investing couples
+                            </p>
+                        </motion.div>
+
+                        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.8 }}
+                                viewport={{ once: true }}
+                                className="space-y-6"
+                            >
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <div className="w-3 h-3 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-lg mb-2">AI Ambient Agents</h3>
+                                            <p className="text-gray-600 dark:text-gray-300">
+                                                Intelligent background agents continuously monitor your financial patterns, learning your spending habits and investment preferences to provide proactive insights.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <div className="w-3 h-3 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-lg mb-2">Machine Learning Forecasting</h3>
+                                            <p className="text-gray-600 dark:text-gray-300">
+                                                Traditional ML models analyze your historical data to predict future cash flows, investment opportunities, and budget adjustments with precision.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <div className="w-3 h-3 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-lg mb-2">Orchestrated AI Workflows</h3>
+                                            <p className="text-gray-600 dark:text-gray-300">
+                                                Multiple AI agents work together through Model Context Protocol (MCP) to deliver personalized financial recommendations tailored to your unique situation.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-[#6ae58d]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <div className="w-3 h-3 rounded-full bg-[#6ae58d]" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-lg mb-2">Conversational AI Assistant</h3>
+                                            <p className="text-gray-600 dark:text-gray-300">
+                                                Your personal AI financial assistant understands your relationship dynamics, investment goals, and spending patterns to provide contextually relevant guidance.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                                viewport={{ once: true }}
+                                className="relative"
+                            >
+                                <div className="bg-gradient-to-br from-[#6ae58d]/10 to-[#5ad17c]/10 p-8 rounded-2xl border border-gray-200/50 dark:border-gray-700/50">
+                                    <div className="space-y-6">
+                                        <div className="text-center">
+                                            <h3 className="text-xl font-semibold mb-2">AI Technology Stack</h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Powering intelligent financial decisions</p>
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                                                <div className="text-sm font-medium text-[#6ae58d] mb-1">Ambient Intelligence</div>
+                                                <div className="text-xs text-gray-600 dark:text-gray-400">Background pattern recognition</div>
+                                            </div>
+                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                                                <div className="text-sm font-medium text-[#6ae58d] mb-1">ML Forecasting</div>
+                                                <div className="text-xs text-gray-600 dark:text-gray-400">Predictive financial modeling</div>
+                                            </div>
+                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                                                <div className="text-sm font-medium text-[#6ae58d] mb-1">Agent Orchestration</div>
+                                                <div className="text-xs text-gray-600 dark:text-gray-400">MCP-powered workflows</div>
+                                            </div>
+                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                                                <div className="text-sm font-medium text-[#6ae58d] mb-1">Conversational AI</div>
+                                                <div className="text-xs text-gray-600 dark:text-gray-400">Personal financial advisor</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
+                                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                                                Result: <span className="font-semibold text-[#6ae58d]">Tailored experiences</span> for every investing couple
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 </section>
 

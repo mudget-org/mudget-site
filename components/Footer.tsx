@@ -172,13 +172,30 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Mudget. All rights reserved.
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 sm:mt-0">
-            Made for couples and individuals
-          </p>
+        {/* Legal Disclaimer */}
+        <div className="border-t mt-8 pt-6">
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-6">
+            <h5 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              Educational Content Disclaimer
+            </h5>
+            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              The information provided on this website, including calculators, articles, and AI-generated content, 
+              is for educational purposes only and should not be considered as professional financial, investment, 
+              tax, or legal advice. All calculations and recommendations are estimates based on the information 
+              provided and should not be relied upon for making financial decisions. Before making any financial 
+              decisions, please consult with qualified financial advisors, tax professionals, or other appropriate 
+              professionals who can provide advice tailored to your specific situation.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              © {new Date().getFullYear()} Mudget. All rights reserved.
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 sm:mt-0">
+              Made for investing couples
+            </p>
+          </div>
         </div>
       </div>
     </footer>

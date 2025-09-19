@@ -1,8 +1,8 @@
 const siteMetadata = {
-    title: 'Mudget Financial Blogs',
+    title: 'Mudget Finance Blog',
     author: 'Josh Burgess',
     headerTitle: 'Mudget',
-    description: 'Your start to financial freedom begins with the freedom of information. Learn how to budget, save, and invest with Mudget.',
+    description: 'Financial education for couples who invest together. Learn budgeting strategies, investment tips, and wealth-building techniques designed for investing couples.',
     language: 'en-us',
     theme: 'system', // system, dark or light
     siteUrl: 'https://mudget.finance', // your website URL

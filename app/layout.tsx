@@ -8,26 +8,41 @@ import siteMetadata from "../utils/siteMetaData";
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteMetadata.siteUrl),
-    title: "Mudget - Financial Vitals Dashboard for Couples & Individuals",
+    title: "Mudget - AI Budget App for Couples Investing Together",
     description:
-        "Budget together as a couple with Mudget's secure Plaid integration. AI-powered financial insights, goal tracking, and intuitive Financial Vitals dashboard. Perfect for couples and individuals taking control of their finances.",
+        "The AI-powered budget app designed for couples who invest. Track expenses, manage investment goals, and get financial education together. Smart budgeting with secure bank integration for wealth-building couples.",
     keywords: [
+        "mudget",
+        "mudget finance", 
+        "ai budgeting",
+        "ai finance",
+        "couples budgeting",
+        "couples investing",
+        "investment budgeting",
+        "budget app",
+        "financial education",
+        "finance blog",
+        "wealth building couples",
+        "investment planning couples",
         "budgeting app", 
         "financial planning", 
-        "couples budgeting", 
-        "personal finance", 
-        "financial goals", 
         "AI financial assistant",
-        "Plaid integration",
-        "financial dashboard",
         "money management",
-        "budget tracker"
+        "budget tracker",
+        "couples financial goals",
+        "personal finance",
+        "financial goals",
+        "ambient agents",
+        "machine learning forecasting",
+        "AI workflows",
+        "conversational AI",
+        "MCP financial technology"
     ],
     authors: [{ name: "Mudget Finance" }],
     openGraph: {
-        title: "Mudget - Financial Vitals Dashboard for Couples & Individuals",
+        title: "Mudget - AI Budget App for Couples Investing Together",
         description:
-            "Budget together as a couple with Mudget's secure Plaid integration. AI-powered financial insights, goal tracking, and intuitive Financial Vitals dashboard.",
+            "The AI-powered budget app designed for couples who invest. Track expenses, manage investment goals, and get financial education together.",
         url: "https://mudget.finance",
         siteName: "Mudget",
         images: [
@@ -55,9 +70,9 @@ export const metadata: Metadata = {
   },
     twitter: {
         card: "summary_large_image",
-        title: "Mudget - Financial Vitals Dashboard for Couples & Individuals",
+        title: "Mudget - AI Budget App for Couples Investing Together",
         description:
-            "Budget together as a couple with Mudget's secure Plaid integration. AI-powered financial insights and goal tracking.",
+            "The AI-powered budget app designed for couples who invest. Track expenses, manage investment goals together.",
         images: ["https://mudget.finance/twitter-image.jpg"],
         creator: "@mudget_finance",
     },
