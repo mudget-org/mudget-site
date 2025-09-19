@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CSPostHogProvider } from "@/components/PostHogProvider";
 import { OrganizationStructuredData, WebApplicationStructuredData } from "@/components/StructuredData";
+import CookieConsent from "@/components/CookieConsent";
 import React from "react";
 import siteMetadata from "../utils/siteMetaData";
 
@@ -77,7 +78,10 @@ export default function RootLayout({
                     <OrganizationStructuredData />
                     <WebApplicationStructuredData />
                 </head>
-                <body>{children}</body>
+                <body>
+                    {children}
+                    <CookieConsent />
+                </body>
             </html>
         </CSPostHogProvider>
     );

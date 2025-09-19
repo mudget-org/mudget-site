@@ -13,6 +13,13 @@ const Nav = ({ AppURL}: {AppURL: string}) => {
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [whyMudgetOpen, setWhyMudgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Mobile collapsible states
+  const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+  const [mobileWhyMudgetOpen, setMobileWhyMudgetOpen] = useState(false);
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
+  const [mobileAccountOpen, setMobileAccountOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const whyMudgetRef = useRef<HTMLDivElement>(null);
@@ -146,6 +153,13 @@ const Nav = ({ AppURL}: {AppURL: string}) => {
                     >
                       Credit Score Calculator
                     </Link>
+                    <Link
+                      href="/tools/insurance-calculator"
+                      className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      Insurance Calculator
+                    </Link>
                   </div>
                   <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3">
                     <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
@@ -153,10 +167,10 @@ const Nav = ({ AppURL}: {AppURL: string}) => {
                     </div>
                     <div className="space-y-1">
                       <div className="px-3 py-2 text-sm text-gray-400 cursor-not-allowed">
-                        Insurance Coverage Calculator
+                        Debt Repayment Strategy
                       </div>
                       <div className="px-3 py-2 text-sm text-gray-400 cursor-not-allowed">
-                        Debt Repayment Strategy
+                        Tax Calculator
                       </div>
                     </div>
                   </div>
@@ -287,80 +301,222 @@ const Nav = ({ AppURL}: {AppURL: string}) => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
           <div className="p-4 space-y-4">
-            <Link
-              href="/#features"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Features
-            </Link>
-            <Link
-              href="/tools/mortgage-calculator"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Mortgage Calculator
-            </Link>
-            <Link
-              href="/tools/retirement-calculator"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Retirement Calculator
-            </Link>
-            <Link
-              href="/tools/loan-calculator"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Loan Calculator
-            </Link>
-            <Link
-              href="/tools/credit-score-calculator"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Credit Score Calculator
-            </Link>
-            {isFeatureEnabled('showWhyMudgetSection') && isFeatureEnabled('showVsSpreadsheets') && (
-              <Link
-                href="/why-mudget/vs-spreadsheets"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-                onClick={() => setMobileMenuOpen(false)}
+            {/* Features Section */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setMobileFeaturesOpen(!mobileFeaturesOpen)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
-                vs Spreadsheets
-              </Link>
-            )}
-            <Link
-              href="/blog"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Blog
-            </Link>
-            <Link
-              href="/about"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </Link>
-            {isFeatureEnabled('showPricingPage') && (
-              <Link
-                href="/pricing"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-                onClick={() => setMobileMenuOpen(false)}
+                Features
+                <ChevronDown className={`w-3 h-3 transition-transform ${mobileFeaturesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileFeaturesOpen && (
+                <div className="space-y-1">
+                  <Link
+                    href="/#features"
+                    className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="p-1 rounded bg-[#6ae58d]/10">
+                      <Users className="w-3 h-3 text-[#6ae58d]" />
+                    </div>
+                    Household Budgeting
+                  </Link>
+                  <Link
+                    href="/#features"
+                    className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="p-1 rounded bg-[#6ae58d]/10">
+                      <Calculator className="w-3 h-3 text-[#6ae58d]" />
+                    </div>
+                    Financial Vitals
+                  </Link>
+                  <Link
+                    href="/#ai"
+                    className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <div className="p-1 rounded bg-[#6ae58d]/10">
+                      <BookOpen className="w-3 h-3 text-[#6ae58d]" />
+                    </div>
+                    AI Assistant
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Tools Section */}
+            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <button
+                onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
-                Pricing
-              </Link>
+                Free Calculators
+                <ChevronDown className={`w-3 h-3 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileToolsOpen && (
+                <div className="space-y-1">
+                  <Link
+                    href="/tools/mortgage-calculator"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Mortgage Calculator
+                  </Link>
+                  <Link
+                    href="/tools/retirement-calculator"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Retirement Calculator
+                  </Link>
+                  <Link
+                    href="/tools/loan-calculator"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Loan Calculator
+                  </Link>
+                  <Link
+                    href="/tools/credit-score-calculator"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Credit Score Calculator
+                  </Link>
+                  <Link
+                    href="/tools/insurance-calculator"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Insurance Calculator
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Why Mudget Section - Feature Flagged */}
+            {isFeatureEnabled('showWhyMudgetSection') && (
+              <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                <button
+                  onClick={() => setMobileWhyMudgetOpen(!mobileWhyMudgetOpen)}
+                  className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                >
+                  Why Mudget
+                  <ChevronDown className={`w-3 h-3 transition-transform ${mobileWhyMudgetOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileWhyMudgetOpen && (
+                  <div className="space-y-1">
+                    {isFeatureEnabled('showVsMint') && (
+                      <Link
+                        href="/why-mudget/vs-mint"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        vs Mint
+                      </Link>
+                    )}
+                    {isFeatureEnabled('showVsYnab') && (
+                      <Link
+                        href="/why-mudget/vs-ynab"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        vs YNAB
+                      </Link>
+                    )}
+                    {isFeatureEnabled('showVsEverydollar') && (
+                      <Link
+                        href="/why-mudget/vs-everydollar"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        vs EveryDollar
+                      </Link>
+                    )}
+                    {isFeatureEnabled('showVsPocketguard') && (
+                      <Link
+                        href="/why-mudget/vs-pocketguard"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        vs PocketGuard
+                      </Link>
+                    )}
+                    {isFeatureEnabled('showVsSpreadsheets') && (
+                      <Link
+                        href="/why-mudget/vs-spreadsheets"
+                        className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        vs Spreadsheets
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
-            <Link
-              href={`${AppURL}/login`}
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign In
-            </Link>
+
+            {/* Main Navigation */}
+            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <button
+                onClick={() => setMobileMoreOpen(!mobileMoreOpen)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              >
+                More
+                <ChevronDown className={`w-3 h-3 transition-transform ${mobileMoreOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileMoreOpen && (
+                <div className="space-y-1">
+                  <Link
+                    href="/blog"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    About
+                  </Link>
+                  {isFeatureEnabled('showPricingPage') && (
+                    <Link
+                      href="/pricing"
+                      className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Pricing
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Account Section */}
+            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <button
+                onClick={() => setMobileAccountOpen(!mobileAccountOpen)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              >
+                Account
+                <ChevronDown className={`w-3 h-3 transition-transform ${mobileAccountOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileAccountOpen && (
+                <div className="space-y-1">
+                  <Link
+                    href={`${AppURL}/login`}
+                    className="block px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

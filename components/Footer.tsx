@@ -82,12 +82,15 @@ export default function Footer() {
               <Link href="/tools/credit-score-calculator" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 Credit Score Calculator
               </Link>
+              <Link href="/tools/insurance-calculator" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
+                Insurance Calculator
+              </Link>
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <span>Insurance Coverage Calculator</span>
+                <span>Debt Repayment Strategy</span>
                 <span className="px-2 py-0.5 text-xs bg-[#6ae58d]/10 text-[#6ae58d] rounded-full">Coming Soon</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <span>Debt Repayment Strategy</span>
+                <span>Tax Calculator</span>
                 <span className="px-2 py-0.5 text-xs bg-[#6ae58d]/10 text-[#6ae58d] rounded-full">Coming Soon</span>
               </div>
             </nav>
@@ -152,6 +155,10 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold text-gray-900 dark:text-gray-100">Company</h4>
             <nav className="space-y-2">
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <span>Careers</span>
+                <span className="px-2 py-0.5 text-xs bg-[#6ae58d]/10 text-[#6ae58d] rounded-full">Coming Soon</span>
+              </div>
               <Link href="/terms" className="block text-sm text-gray-600 dark:text-gray-300 hover:text-[#6ae58d] transition-colors">
                 Terms of Service
               </Link>
