@@ -50,7 +50,7 @@ function AnimatedBadge() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-[#6ae58d]/10 rounded-full border border-[#6ae58d]/20"
         >
             <span className="w-2 h-2 bg-[#6ae58d] rounded-full animate-pulse" />
-            <div className="relative overflow-hidden h-5 flex items-center min-w-[140px]">
+            <div className="relative overflow-hidden h-5 flex items-center min-w-[200px]">
                 <AnimatePresence mode="wait">
                     <motion.span
                         key={currentIndex}
