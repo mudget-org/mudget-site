@@ -171,7 +171,12 @@ function InsuranceCalculatorContent() {
     const riskProfile = riskScore >= 6 ? 'high' : riskScore >= 3 ? 'moderate' : 'low';
     
     // Generate recommendations
-    const recommendations = [];
+    const recommendations: Array<{
+      type: string;
+      recommendation: string;
+      priority: 'high' | 'medium' | 'low';
+      savings: string;
+    }> = [];
     
     if (emergencyFund < monthlyExpenses * 6) {
       recommendations.push({
